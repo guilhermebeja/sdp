@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f72cc17e-a2e4-4a0b-95cb-8f4a2cfa0310" name="Default" comment="">
+    <list default="true" id="f72cc17e-a2e4-4a0b-95cb-8f4a2cfa0310" name="Default" comment="asdasdasd">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/out/production/projectSDP/Client/App.class" afterPath="$PROJECT_DIR$/out/production/projectSDP/Client/App.class" />
       <change beforePath="$PROJECT_DIR$/out/production/projectSDP/Client/Client.class" afterPath="$PROJECT_DIR$/out/production/projectSDP/Client/Client.class" />
+      <change beforePath="$PROJECT_DIR$/out/production/projectSDP/Client/ClientSocket.class" afterPath="$PROJECT_DIR$/out/production/projectSDP/Client/ClientSocket.class" />
       <change beforePath="$PROJECT_DIR$/out/production/projectSDP/DataStructures/Conversation.class" afterPath="$PROJECT_DIR$/out/production/projectSDP/DataStructures/Conversation.class" />
+      <change beforePath="$PROJECT_DIR$/out/production/projectSDP/UserInterface/ClientInterface.class" afterPath="$PROJECT_DIR$/out/production/projectSDP/UserInterface/ClientInterface.class" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,14 +28,14 @@
       <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Client/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+            <state relative-caret-position="476">
+              <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#764#765#0" expanded="true" />
                 <element signature="e#798#799#0" expanded="true" />
-                <element signature="e#1922#1923#0" expanded="true" />
-                <element signature="e#1978#1979#0" expanded="true" />
+                <element signature="e#1955#1956#0" expanded="true" />
+                <element signature="e#2011#2012#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -41,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/src/Interfaces/Observer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="85">
-              <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -413,7 +417,21 @@
       <option name="project" value="LOCAL" />
       <updated>1514318406418</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="asdasdasd">
+      <created>1514318445261</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1514318445261</updated>
+    </task>
+    <task id="LOCAL-00005" summary="asdasdasd">
+      <created>1514318579836</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1514318579836</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -454,7 +472,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="zx" />
     <MESSAGE value="asdasd" />
-    <option name="LAST_COMMIT_MESSAGE" value="asdasd" />
+    <MESSAGE value="asdasdasd" />
+    <option name="LAST_COMMIT_MESSAGE" value="asdasdasd" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -571,7 +590,7 @@
     <entry file="file://$PROJECT_DIR$/src/Interfaces/Observer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
-          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -591,14 +610,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Client/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+        <state relative-caret-position="476">
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#764#765#0" expanded="true" />
             <element signature="e#798#799#0" expanded="true" />
-            <element signature="e#1922#1923#0" expanded="true" />
-            <element signature="e#1978#1979#0" expanded="true" />
+            <element signature="e#1955#1956#0" expanded="true" />
+            <element signature="e#2011#2012#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -22,12 +22,32 @@ public class ClientInterface extends JFrame{
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.sendMessage("192.168.1.96", 8080, textArea1.getText());
+                //192.168.1.76
+                client.sendMessage(
+                        textField1.getText().split(":")[0],
+                        Integer.parseInt(textField1.getText().split(":")[1]),
+                        textArea1.getText());
             }
         });
+
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (IllegalAccessException e) {
+            System.out.println(e.getMessage());
+        } catch (InstantiationException e) {
+            System.out.println(e.getMessage());
+        } catch (UnsupportedLookAndFeelException e) {
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void main(String[] args) {
         ClientInterface cl = new ClientInterface();
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

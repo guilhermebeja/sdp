@@ -8,7 +8,13 @@ package UserInterface;
 import Client.*;
 import DataStructures.Conversation;
 import DataStructures.Message;
+import HtmlHelper.HtmlElement;
+import HtmlHelper.Html;
 import Interfaces.Observer;
+
+import static HtmlHelper.Html.br;
+import static HtmlHelper.Html.h;
+import static HtmlHelper.Html.text;
 
 /**
  *
@@ -32,13 +38,16 @@ public class ClientInterface extends javax.swing.JFrame implements Observer {
     
     @Override
     public void update(Object o) {
-        String text = "";
+        HtmlElement html = new HtmlElement("div");
         Conversation c = (Conversation)o;
         for(Message m : c.getMessages()){
-            text+=m.getMessage();
-            text+="\n\n";
+            html.with(
+                    h(3, m.getMessage()).setAttribute("class", ""),
+                    br()
+            );
+
         }
-        conversationTextArea.setText(text);
+        conversationTextArea.setText(html.render());
     }
     
     /**

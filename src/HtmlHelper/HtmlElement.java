@@ -1,7 +1,5 @@
 package HtmlHelper;
 
-import org.apache.commons.lang.SerializationUtils;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -270,7 +268,7 @@ public class HtmlElement implements Serializable {
     }
     //endregion
 
-    public HtmlElement createCopy(){
-        return (HtmlElement) SerializationUtils.clone(this);
-    }
+    //public HtmlElement createCopy(){
+        //return (HtmlElement) SerializationUtils.clone(this);
+    //}
 }

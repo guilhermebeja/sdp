@@ -32,7 +32,7 @@ public class Client {
     }
 
     public void onMessageReceive(Message message){
-        if(!conversations.containsKey(message.getSenderIP())){
+        if(!conversations.containsKey(genKey(message.getSenderIP(), message.getSenderPort()))){
             conversations.put(genKey(message.getSenderIP(), message.getSenderPort()), new Conversation());
         }
 

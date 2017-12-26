@@ -46,6 +46,7 @@ public class ClientSocket extends Thread{
             Sendable received = (Sendable)ois.readObject();
 
             if(received instanceof Message){
+                ((Message)received).setSenderIP(dp.getAddress().toString());
                 client.onMessageReceive((Message)received);
             }
             int len=dp.getLength();

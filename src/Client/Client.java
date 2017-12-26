@@ -25,6 +25,10 @@ public class Client {
     }
 
     public void onMessageReceive(Message message){
+        if(!conversations.containsKey(message.getSenderIP())){
+            conversations.put(genKey(message.getSenderIP(), message.getSenderPort()), new Conversation());
+        }
+
         Conversation c = conversations.get(genKey(message.getSenderIP(), message.getSenderPort()));
         c.addMessage(message);
         System.out.println(message.getSenderIP() +": " + message.getMessage());

@@ -16,6 +16,14 @@ public class Client {
     private String nickname, password, ip;
     private int port;
 
+    public String getIP(){
+        return ip;
+    }
+
+    public int getPort(){
+        return port;
+    }
+
     public Client(String nickname, String password,String ip, int port) {
         this.nickname = nickname;
         this.password = password;

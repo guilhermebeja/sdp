@@ -12,15 +12,14 @@ import HtmlHelper.HtmlElement;
 import HtmlHelper.Html;
 import Interfaces.Observer;
 
-import static HtmlHelper.Html.br;
-import static HtmlHelper.Html.h;
-import static HtmlHelper.Html.text;
+
+import static HtmlHelper.Html.*;
 
 /**
  *
  * @author HP
  */
-public class ClientInterface extends javax.swing.JFrame implements Observer {
+public class ClientInterface extends javax.swing.JFrame {
 
     private Client client;
     /**
@@ -32,23 +31,9 @@ public class ClientInterface extends javax.swing.JFrame implements Observer {
     }
 
     private void init(){
-        client = new Client("Gui", "", "localhost", 8080);
-        client.addObserver(this);
+        chatPanel.add(new ChatPanel(new Client("Zé", "", "192.168.0.76", 8080)));
     }
-    
-    @Override
-    public void update(Object o) {
-        HtmlElement html = new HtmlElement("div");
-        Conversation c = (Conversation)o;
-        for(Message m : c.getMessages()){
-            html.with(
-                    h(3, m.getMessage()).setAttribute("class", ""),
-                    br()
-            );
 
-        }
-        conversationTextArea.setText(html.render());
-    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,61 +45,71 @@ public class ClientInterface extends javax.swing.JFrame implements Observer {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        addressTextField = new javax.swing.JTextField();
+        controlPanel = new javax.swing.JPanel();
+        addFriendText = new javax.swing.JTextField();
+        addFriendButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        messageTextArea = new javax.swing.JTextArea();
-        sendButton = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        conversationTextArea = new javax.swing.JTextPane();
+        jList1 = new javax.swing.JList<>();
+        chatPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        addressTextField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        addressTextField.setText("192.168.1.76:8080");
+        controlPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        messageTextArea.setColumns(20);
-        messageTextArea.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        messageTextArea.setRows(5);
-        jScrollPane1.setViewportView(messageTextArea);
+        addFriendText.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
-        sendButton.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        sendButton.setText("Send");
-        sendButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sendButtonActionPerformed(evt);
-            }
+        addFriendButton.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        addFriendButton.setText("Add");
+
+        jList1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
         });
+        jScrollPane1.setViewportView(jList1);
 
-        conversationTextArea.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jScrollPane3.setViewportView(conversationTextArea);
+        javax.swing.GroupLayout controlPanelLayout = new javax.swing.GroupLayout(controlPanel);
+        controlPanel.setLayout(controlPanelLayout);
+        controlPanelLayout.setHorizontalGroup(
+            controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controlPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(controlPanelLayout.createSequentialGroup()
+                        .addComponent(addFriendText, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addFriendButton)))
+                .addContainerGap())
+        );
+        controlPanelLayout.setVerticalGroup(
+            controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controlPanelLayout.createSequentialGroup()
+                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addFriendButton)
+                    .addComponent(addFriendText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        chatPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        chatPanel.setLayout(new java.awt.CardLayout());
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
-                    .addComponent(addressTextField)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sendButton)))
-                .addContainerGap())
+                .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(sendButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(controlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(chatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -130,15 +125,6 @@ public class ClientInterface extends javax.swing.JFrame implements Observer {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
-        client.sendMessage(
-                addressTextField.getText().split(":")[0],
-                Integer.parseInt(addressTextField.getText().split(":")[1]),
-                messageTextArea.getText()
-        );
-        messageTextArea.setText("");
-    }//GEN-LAST:event_sendButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,12 +162,12 @@ public class ClientInterface extends javax.swing.JFrame implements Observer {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField addressTextField;
-    private javax.swing.JTextPane conversationTextArea;
+    private javax.swing.JButton addFriendButton;
+    private javax.swing.JTextField addFriendText;
+    private javax.swing.JPanel chatPanel;
+    private javax.swing.JPanel controlPanel;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JTextArea messageTextArea;
-    private javax.swing.JButton sendButton;
     // End of variables declaration//GEN-END:variables
 }

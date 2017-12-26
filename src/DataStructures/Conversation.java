@@ -32,6 +32,10 @@ public class Conversation implements Sendable, Serializable {
     public String getMessage() {
         return null;
     }
+
+    public ArrayList<Message> getMessages(){
+        return messages;
+    }
     //endregion
 
     //region Constructors

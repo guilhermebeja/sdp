@@ -3,13 +3,19 @@ package Client;
 import DataStructures.Conversation;
 import DataStructures.Message;
 import Interfaces.Observer;
+import Server.*;
+import Server.ServerResponse;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Client {
     ArrayList<Observer> observers;
-    ClientSocket socket;
+    public ClientSocket socket;
 
     private HashMap<String, Conversation> conversations;
 
@@ -63,6 +69,22 @@ public class Client {
         socket.sendDP(message);
 
         notifyObservers(c);
+    }
+
+    public ServerResponse requestServer(ServerRequest sr) throws IOException, ClassNotFoundException {
+        Socket s  = new Socket("127.0.0.1", 8081);
+
+        ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+        ObjectInputStream is = new ObjectInputStream(s.getInputStream());
+
+        oos.writeObject(sr);
+
+        ServerResponse resp = (ServerResponse) is.readObject();
+        oos.close();
+        is.close();
+        s.close();
+
+        return resp;
     }
 
     private void notifyObservers(Conversation c){

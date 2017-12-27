@@ -8,6 +8,6 @@ public interface Sendable {
     int getSenderPort();
     String getReceiverIP();
     int getReceiverPort();
-    String getMessage();
+    Object getContent();
 
 }

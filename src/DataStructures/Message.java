@@ -1,38 +1,46 @@
 package DataStructures;
 
+import Client.IPConnection;
+
 import java.io.Serializable;
 
 public class Message implements Sendable, Serializable{
-    private String senderIP, receiverIP;
-    private int senderPort, receiverPort;
+    private IPConnection connection;
     private long time;
     private String message;
 
     //region Getters and Setters
     public String getSenderIP() {
-        return senderIP;
+        return connection.getSenderIP();
     }
     public void setSenderIP(String senderIP) {
-        this.senderIP = senderIP;
+        this.connection.setSenderIP(senderIP);
     }
     public String getReceiverIP() {
-        return receiverIP;
+        return connection.getReceiverIP();
     }
     public void setReceiverIP(String receiverIP) {
-        this.receiverIP = receiverIP;
+        this.connection.setReceiverIP(receiverIP);
     }
     public int getSenderPort() {
-        return senderPort;
+        return connection.getSenderPort();
     }
     public void setSenderPort(int senderPort) {
-        this.senderPort = senderPort;
+        connection.setSenderPort(senderPort);
     }
     public int getReceiverPort() {
-        return receiverPort;
+        return connection.getReceiverPort();
     }
     public void setReceiverPort(int receiverPort) {
-        this.receiverPort = receiverPort;
+        connection.setReceiverPort(receiverPort);
     }
+
+
+    @Override
+    public Object getContent() {
+        return message;
+    }
+
     public long getTime() {
         return time;
     }
@@ -49,10 +57,8 @@ public class Message implements Sendable, Serializable{
 
     //region Constructors
     public Message(String senderIP, String receiverIP, int senderPort, int receiverPort, String message) {
-        this.senderIP = senderIP;
-        this.receiverIP = receiverIP;
-        this.senderPort = senderPort;
-        this.receiverPort = receiverPort;
+        connection = new IPConnection(senderIP, receiverIP, senderPort, receiverPort);
+
         this.time = System.currentTimeMillis();
         this.message = message;
     }

@@ -1,11 +1,16 @@
 package Server;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Headers {
+public class Headers implements Serializable{
     HashMap<String, ArrayList<String>> headers;
+
+    public Headers() {
+        headers = new HashMap<>();
+    }
 
     public void setHeaders() {
         headers = new HashMap<>();

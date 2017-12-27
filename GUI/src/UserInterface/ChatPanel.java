@@ -8,6 +8,7 @@ package UserInterface;
 import Client.Client;
 import DataStructures.Conversation;
 import DataStructures.Message;
+import Entities.User;
 import HtmlHelper.HtmlElement;
 import Interfaces.Observer;
 
@@ -19,10 +20,12 @@ import static HtmlHelper.Html.h;
  */
 public class ChatPanel extends javax.swing.JPanel implements Observer {
     Client client;
+    User user;
     /**
      * Creates new form ChatPanel
      */
-    public ChatPanel(Client client) {
+    public ChatPanel(Client client, User targetUser) {
+        user = targetUser;
         this.client = client;
         initComponents();
         init();
@@ -143,8 +146,8 @@ public class ChatPanel extends javax.swing.JPanel implements Observer {
             return;
         }
         client.sendMessage(
-            addressTextField.getText().split(":")[0],
-            Integer.parseInt(addressTextField.getText().split(":")[1]),
+            user.getIp(),
+            user.getPort(),
             messageTextArea.getText()
         );
         messageTextArea.setText("");

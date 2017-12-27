@@ -29,7 +29,7 @@ public class Conversation implements Sendable, Serializable {
     }
 
     @Override
-    public String getMessage() {
+    public Object getContent() {
         return null;
     }
 

@@ -69,7 +69,7 @@ public class ClientSocket extends Thread{
             byte[] dataToSend = baos.toByteArray();
 
             ER=InetAddress.getByName(msg.getReceiverIP());
-            DatagramPacket DP = new DatagramPacket(dataToSend,dataToSend.length,ER,port);
+            DatagramPacket DP = new DatagramPacket(dataToSend,dataToSend.length,ER,msg.getReceiverPort());
             DS.send(DP);
         }catch(IOException e){
             System.out.println(e.getMessage());

@@ -8,10 +8,13 @@ package UserInterface;
 import Client.*;
 import DataStructures.Conversation;
 import DataStructures.Message;
+import Entities.User;
 import HtmlHelper.HtmlElement;
 import HtmlHelper.Html;
 import Interfaces.Observer;
 
+
+import java.util.ArrayList;
 
 import static HtmlHelper.Html.*;
 
@@ -22,6 +25,7 @@ import static HtmlHelper.Html.*;
 public class ClientInterface extends javax.swing.JFrame {
 
     private Client client;
+    private ArrayList<User> users;
     /**
      * Creates new form ClientInterface
      */
@@ -31,7 +35,10 @@ public class ClientInterface extends javax.swing.JFrame {
     }
 
     private void init(){
-        chatPanel.add(new ChatPanel(new Client("Zé", "", "192.168.0.76", 8080)));
+        for(User u : users){
+            chatPanel.add("<cardname>", new ChatPanel(client, u));
+
+        }
     }
 
     

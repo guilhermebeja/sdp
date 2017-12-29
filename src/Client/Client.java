@@ -16,20 +16,21 @@ import java.util.HashMap;
 public class Client {
     ArrayList<Observer> observers;
     public ClientSocket socket;
-
     private HashMap<String, Conversation> conversations;
-
     private String nickname, password, ip;
     private int port;
 
+
+    //region Getters and Setters
     public String getIP(){
         return ip;
     }
-
     public int getPort(){
         return port;
     }
+    //endregion
 
+    //region Constructors
     public Client(String nickname, String password,String ip, int port) {
         this.nickname = nickname;
         this.password = password;
@@ -40,7 +41,9 @@ public class Client {
         socket = new ClientSocket(port, this);
         socket.start();
     }
+    //endregion
 
+    //region Methods
     public void addObserver(Observer obs){
         observers.add(obs);
     }
@@ -65,9 +68,7 @@ public class Client {
 
         Conversation c = conversations.get(genKey(destIP, destPort));
         c.addMessage(message);
-
         socket.sendDP(message);
-
         notifyObservers(c);
     }
 
@@ -92,9 +93,10 @@ public class Client {
             obs.update(c);
         }
     }
+
     private String genKey(String ip, int port){
         return ip + ":" + Integer.toString(port);
     }
-
+    //endregion
 }
 

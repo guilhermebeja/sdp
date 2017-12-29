@@ -23,12 +23,15 @@ public class ClientSocket extends Thread{
     byte bp[] = new byte[1024];
     private Client client;
 
+    //region Constructors
     public ClientSocket(int port, Client client){
         this.port = port;
         this.client = client;
 
     }
+    //endregion
 
+    //region Methods
     public void run(){
         try{DS=new DatagramSocket(port);}
         catch(IOException e){}
@@ -62,7 +65,6 @@ public class ClientSocket extends Thread{
 
     public void sendDP(Sendable msg){
         try{
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(baos);
             oos.writeObject(msg);
@@ -75,4 +77,5 @@ public class ClientSocket extends Thread{
             System.out.println(e.getMessage());
         }
     }
+    //endregion
 }

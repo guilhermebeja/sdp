@@ -16,29 +16,26 @@ public class Message implements Sendable, Serializable{
     public void setSenderIP(String senderIP) {
         this.connection.setSenderIP(senderIP);
     }
+
     public String getReceiverIP() {
         return connection.getReceiverIP();
     }
     public void setReceiverIP(String receiverIP) {
         this.connection.setReceiverIP(receiverIP);
     }
+
     public int getSenderPort() {
         return connection.getSenderPort();
     }
     public void setSenderPort(int senderPort) {
         connection.setSenderPort(senderPort);
     }
+
     public int getReceiverPort() {
         return connection.getReceiverPort();
     }
     public void setReceiverPort(int receiverPort) {
         connection.setReceiverPort(receiverPort);
-    }
-
-
-    @Override
-    public Object getContent() {
-        return message;
     }
 
     public long getTime() {
@@ -47,11 +44,17 @@ public class Message implements Sendable, Serializable{
     public void setTime(long time) {
         this.time = time;
     }
+
     public String getMessage() {
         return message;
     }
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public Object getContent() {
+        return message;
     }
     //endregion
 

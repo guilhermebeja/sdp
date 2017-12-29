@@ -11,6 +11,7 @@ public class Server extends Thread{
     private ServerSocket serverSoc;
     private boolean listen = false;
 
+    //region Constructor
     public Server(int port) {
         try {
             this.serverSoc = new ServerSocket(port);
@@ -21,7 +22,9 @@ public class Server extends Thread{
             System.out.println(e.getMessage());
         }
     }
+    //endregion
 
+    //region Methods
     public void run(){
         try{
             while(listen){
@@ -75,4 +78,5 @@ public class Server extends Thread{
         Server server = new Server(8081);
     }
 
+    //endregion
 }

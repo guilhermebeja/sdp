@@ -11,10 +11,10 @@ public class ServerRequest implements Sendable, Serializable{
     private Headers headers;
     private IPConnection connection;
 
+    //region Getters and Setters
     public RequestType getRequestType() {
         return requestType;
     }
-
     public void setRequestType(RequestType requestType) {
         this.requestType = requestType;
     }
@@ -22,7 +22,6 @@ public class ServerRequest implements Sendable, Serializable{
     public String getPath() {
         return path;
     }
-
     public void setPath(String path) {
         this.path = path;
     }
@@ -30,21 +29,8 @@ public class ServerRequest implements Sendable, Serializable{
     public Headers getHeaders() {
         return headers;
     }
-
     public void setHeaders(Headers headers) {
         this.headers = headers;
-    }
-
-    public ServerRequest(RequestType requestType, String path, Headers headers, IPConnection connection) {
-        this.connection = connection;
-        this.requestType = requestType;
-        this.path = path;
-        this.headers = headers;
-    }
-
-    @Override
-    public int length() {
-        return this.length();
     }
 
     public String getSenderIP() {
@@ -53,28 +39,47 @@ public class ServerRequest implements Sendable, Serializable{
     public void setSenderIP(String senderIP) {
         this.connection.setSenderIP(senderIP);
     }
+
     public String getReceiverIP() {
         return connection.getReceiverIP();
     }
     public void setReceiverIP(String receiverIP) {
         this.connection.setReceiverIP(receiverIP);
     }
+
     public int getSenderPort() {
         return connection.getSenderPort();
     }
     public void setSenderPort(int senderPort) {
         connection.setSenderPort(senderPort);
     }
+
     public int getReceiverPort() {
         return connection.getReceiverPort();
+    }
+    public void setReceiverPort(int receiverPort) {
+        connection.setReceiverPort(receiverPort);
     }
 
     @Override
     public Object getContent() {
         return null;
     }
+    //endregion
 
-    public void setReceiverPort(int receiverPort) {
-        connection.setReceiverPort(receiverPort);
+    //region Constructors
+    public ServerRequest(RequestType requestType, String path, Headers headers, IPConnection connection) {
+        this.connection = connection;
+        this.requestType = requestType;
+        this.path = path;
+        this.headers = headers;
     }
+    //endregion
+
+    //region Methods
+    @Override
+    public int length() {
+        return this.length();
+    }
+    //endregion
 }

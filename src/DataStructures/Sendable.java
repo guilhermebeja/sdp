@@ -9,5 +9,4 @@ public interface Sendable {
     String getReceiverIP();
     int getReceiverPort();
     Object getContent();
-
 }

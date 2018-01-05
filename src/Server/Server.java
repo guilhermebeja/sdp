@@ -77,6 +77,5 @@ public class Server extends Thread{
     public static void main(String[] args) {
         Server server = new Server(8081);
     }
-
     //endregion
 }

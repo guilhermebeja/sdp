@@ -1,7 +1,5 @@
 package Server;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -9,32 +7,71 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
         String line = scanner.nextLine();
+        Socket s  = null;
+        try {
+            s = new Socket("192.168.1.70", 8081);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(s.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ObjectInputStream is = null;
+        try {
+            is = new ObjectInputStream(s.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         while(true){
             if(line.equals("EXIT")){
                 break;
             }
-            Socket s  = new Socket("127.0.0.1", 8081);
-            ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-            ObjectInputStream is = new ObjectInputStream(s.getInputStream());
-            oos.writeObject(line);
 
-            ServerResponse resp = (ServerResponse) is.readObject();
+            try {
+                oos.writeObject(line);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-            oos.close();
-            is.close();
+            ServerResponse resp = null;
+            try {
+                resp = (ServerResponse) is.readObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
             System.out.println("Status Code: " + resp.getStatusCode());
             System.out.println("Message: " + resp.getResponse());
             line = scanner.nextLine();
-            s.close();
+
         }
 
+        try {
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            s.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }

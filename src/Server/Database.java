@@ -34,8 +34,6 @@ public class Database {
         users.add(u);
     }
 
-
-
     public static boolean containsUser(Predicate<User> user){
         return users.stream().anyMatch(user);
     }

@@ -6,5 +6,6 @@ public enum StatusCode {
     NOT_FOUND,
     FORBBIDEN,
     ERROR,
+    BAD_REQUEST,
     NOT_AVAILABLE
 }

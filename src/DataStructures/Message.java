@@ -1,76 +1,50 @@
 package DataStructures;
 
-import Client.IPConnection;
-
 import java.io.Serializable;
 
-public class Message implements Sendable, Serializable{
-    private IPConnection connection;
+public class Message implements Serializable{
+    private String sender; // username
+    private String conversation; // Conversation ID
+    private String content;
     private long time;
-    private String message;
 
-    //region Getters and Setters
-    public String getSenderIP() {
-        return connection.getSenderIP();
-    }
-    public void setSenderIP(String senderIP) {
-        this.connection.setSenderIP(senderIP);
+    public String getSender() {
+        return sender;
     }
 
-    public String getReceiverIP() {
-        return connection.getReceiverIP();
-    }
-    public void setReceiverIP(String receiverIP) {
-        this.connection.setReceiverIP(receiverIP);
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public int getSenderPort() {
-        return connection.getSenderPort();
-    }
-    public void setSenderPort(int senderPort) {
-        connection.setSenderPort(senderPort);
+    public String getConversation() {
+        return conversation;
     }
 
-    public int getReceiverPort() {
-        return connection.getReceiverPort();
+    public void setConversation(String conversation) {
+        this.conversation = conversation;
     }
-    public void setReceiverPort(int receiverPort) {
-        connection.setReceiverPort(receiverPort);
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public long getTime() {
         return time;
     }
+
     public void setTime(long time) {
         this.time = time;
     }
 
-    public String getMessage() {
-        return message;
-    }
-    public void setMessage(String message) {
-        this.message = message;
+    public Message(String sender, String conversation, String content, long time) {
+        this.sender = sender;
+        this.conversation = conversation;
+        this.content = content;
+        this.time = time;
     }
 
-    @Override
-    public Object getContent() {
-        return message;
-    }
-    //endregion
-
-    //region Constructors
-    public Message(String senderIP, String receiverIP, int senderPort, int receiverPort, String message) {
-        connection = new IPConnection(senderIP, receiverIP, senderPort, receiverPort);
-
-        this.time = System.currentTimeMillis();
-        this.message = message;
-    }
-    //endregion
-
-    //region Methods
-    @Override
-    public int length() {
-        return this.length();
-    }
-    //endregion
 }

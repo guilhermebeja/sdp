@@ -48,7 +48,9 @@ public class Client {
         observers.add(obs);
     }
 
+
     public void onMessageReceive(Message message){
+        /*
         if(!conversations.containsKey(genKey(message.getSenderIP(), message.getSenderPort()))){
             conversations.put(genKey(message.getSenderIP(), message.getSenderPort()), new Conversation());
         }
@@ -57,9 +59,11 @@ public class Client {
         c.addMessage(message);
         System.out.println(message.getSenderIP() +": " + message.getMessage());
         notifyObservers(c);
+        */
     }
 
     public void sendMessage(String destIP, int destPort, String msg){
+        /*
         Message message = new Message(ip,destIP,port, destPort, msg);
 
         if(!conversations.containsKey(genKey(destIP, destPort))){
@@ -70,6 +74,7 @@ public class Client {
         c.addMessage(message);
         socket.sendDP(message);
         notifyObservers(c);
+        */
     }
 
     public ServerResponse requestServer(ServerRequest sr) throws IOException, ClassNotFoundException {

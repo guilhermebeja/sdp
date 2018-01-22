@@ -31,7 +31,7 @@ public class ClientInterface extends javax.swing.JFrame {
      */
     public ClientInterface() {
         initComponents();
-        init();
+        //init();
     }
 
     private void init(){

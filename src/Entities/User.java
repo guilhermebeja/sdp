@@ -4,25 +4,27 @@ import DataStructures.Conversation;
 
 import java.util.ArrayList;
 
+/**
+ * Identifies a user
+ */
 public class User {
-    private String nickname, password, ip;
+    private String username, password, ip;
     private int port;
 
-    private ArrayList<Conversation> conversations;
-    private ArrayList<User> friends;
+    private ArrayList<String> friends; // list of usernames
 
     //region Getters and Setter
-    public ArrayList<User> getFriends() {
+    public ArrayList<String> getFriends() {
         return friends;
     }
-    public void setFriends(ArrayList<User> friends) {
+    public void setFriends(ArrayList<String> friends) {
         this.friends = friends;
     }
-    public String getNickname() {
-        return nickname;
+    public String getUsername() {
+        return username;
     }
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setUsername(String username) {
+        this.username = username;
     }
     public String getPassword() {
         return password;
@@ -45,19 +47,29 @@ public class User {
     //endregion
 
     //region Constructors
-    public User(String nickname, String password, String ip, int port) {
-        this.nickname = nickname;
+    public User(String username, String password, String ip, int port) {
+        this.username = username;
         this.password = password;
         this.ip = ip;
         this.port = port;
-        conversations = new ArrayList<>();
         friends = new ArrayList<>();
     }
     //endregion
 
     //region Methods
-    public void addFriend(User f){
-        friends.add(f);
+    public void addFriend(String friend){
+        if(!friends.contains(friend)){
+            friends.add(friend);
+        }
     }
+
+    public void removeFriend(String friend){
+        friends.remove(friend);
+    }
+
+    public String getNetAddress(){
+        return ip+ ":"+ port;
+    }
+
     //endregion
 }

@@ -1,15 +1,13 @@
 package Server;
 
-import Client.IPConnection;
-import DataStructures.Sendable;
+import Server.Exceptions.RequestNotValidException;
 
 import java.io.Serializable;
 
-public class ServerRequest implements Sendable, Serializable{
+public class ServerRequest implements Serializable{
     private RequestType requestType;
-    private String path;
-    private Headers headers;
-    private IPConnection connection;
+    private String path[];
+    private Parameters parameters;
 
     //region Getters and Setters
     public RequestType getRequestType() {
@@ -19,67 +17,67 @@ public class ServerRequest implements Sendable, Serializable{
         this.requestType = requestType;
     }
 
-    public String getPath() {
+    public String[] getPath() {
         return path;
     }
     public void setPath(String path) {
-        this.path = path;
+        this.path = path.split("/");
     }
 
-    public Headers getHeaders() {
-        return headers;
+    public Parameters getParameters() {
+        return parameters;
     }
-    public void setHeaders(Headers headers) {
-        this.headers = headers;
-    }
-
-    public String getSenderIP() {
-        return connection.getSenderIP();
-    }
-    public void setSenderIP(String senderIP) {
-        this.connection.setSenderIP(senderIP);
+    public void setParameters(Parameters parameters) {
+        this.parameters = parameters;
     }
 
-    public String getReceiverIP() {
-        return connection.getReceiverIP();
-    }
-    public void setReceiverIP(String receiverIP) {
-        this.connection.setReceiverIP(receiverIP);
-    }
-
-    public int getSenderPort() {
-        return connection.getSenderPort();
-    }
-    public void setSenderPort(int senderPort) {
-        connection.setSenderPort(senderPort);
-    }
-
-    public int getReceiverPort() {
-        return connection.getReceiverPort();
-    }
-    public void setReceiverPort(int receiverPort) {
-        connection.setReceiverPort(receiverPort);
-    }
-
-    @Override
-    public Object getContent() {
-        return null;
-    }
     //endregion
 
     //region Constructors
-    public ServerRequest(RequestType requestType, String path, Headers headers, IPConnection connection) {
-        this.connection = connection;
-        this.requestType = requestType;
-        this.path = path;
-        this.headers = headers;
+    public ServerRequest(String url, String ip, int port) throws RequestNotValidException{
+        parameters = new Parameters();
+
+        String[] parts = url.split(" ");
+
+        if(parts.length < 2){
+            //TODO: Throw exception
+        }
+
+        String type = parts[0];
+
+        if(type.equals("GET")){
+            requestType = RequestType.GET;
+        }
+        else if(type.equals("POST")){
+            requestType = RequestType.POST;
+        }
+        else{
+            throw new RequestNotValidException("Type \""+type+"\" not valid");
+        }
+
+        path = parts[1].split("/");
+
+        String query=null;
+        if(parts.length==3){
+            query = parts[2];
+        }
+
+        if(query!=null){
+            String params[] = query.split("&"); // [key1=value, key1=value, key2 = value]
+
+            for(int i =0; i < params.length; i++){
+                String q[] = params[i].split("=");
+                if(q.length==2){
+                    parameters.addParameter(q[0], q[1]);
+                }
+            }
+        }
+
+        parameters.addParameter("ip", ip);
+        parameters.addParameter("port", Integer.toString(port));
+
     }
+
     //endregion
 
-    //region Methods
-    @Override
-    public int length() {
-        return this.length();
-    }
-    //endregion
 }

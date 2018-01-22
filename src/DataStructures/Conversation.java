@@ -3,59 +3,60 @@ package DataStructures;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Conversation implements Sendable, Serializable {
+public class Conversation implements Serializable {
 
+    private String id;
+    private ArrayList<String> users; // usernames
     private ArrayList<Message> messages;
 
     //region Getters and Setters
-    @Override
-    public String getSenderIP() {
-        return null;
+
+    public String getId() {
+        return id;
     }
 
-    @Override
-    public int getSenderPort() {
-        return 0;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    @Override
-    public String getReceiverIP() {
-        return null;
+    public ArrayList<String> getUsers() {
+        return users;
     }
 
-    @Override
-    public int getReceiverPort() {
-        return 0;
+    public void setUsers(ArrayList<String> users) {
+        this.users = users;
     }
 
-    @Override
-    public Object getContent() {
-        return null;
-    }
-
-    public ArrayList<Message> getMessages(){
+    public ArrayList<Message> getMessages() {
         return messages;
     }
-    //endregion
 
-    //region Constructors
-    public Conversation() {
-        messages = new ArrayList<>();
-    }
-
-    public Conversation(ArrayList<Message> messages) {
+    public void setMessages(ArrayList<Message> messages) {
         this.messages = messages;
     }
     //endregion
 
     //region Methods
-    public void addMessage(Message msg){
-        messages.add(msg);
+
+    public void addMessage(Message m){
+        messages.add(m);
     }
 
-    @Override
-    public int length() {
-        return this.length();
+    public void addUser(String username){
+        if(!users.contains(username)){
+            users.add(username);
+        }
+    }
+
+    public void removeUser(String username){
+        if(users.contains(username)){
+            users.remove(username);
+        }
     }
     //endregion
+
+
+    public Conversation(String id) {
+        this.id = id;
+    }
 }

@@ -177,8 +177,8 @@ public class Server extends Thread{
                 rs = new ServerResponse(StatusCode.BAD_REQUEST, e.getMessage());
             }finally {
                 os.writeObject(rs);
-                os.close();
-                oos.close();
+                //os.close();
+                //oos.close();
             }
 
         } catch (IOException e) {

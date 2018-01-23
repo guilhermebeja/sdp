@@ -4,3 +4,9 @@
 /src/UI/UI/build/
 /GUI/UI/nbproject/private/
 /GUI/UI/build/
+.idea
+*.idea
+idea
+/.idea
+out
+/out

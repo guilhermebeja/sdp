@@ -1,107 +1,100 @@
 package Client;
 
-import DataStructures.Conversation;
-import DataStructures.Message;
-import Interfaces.Observer;
-import Server.*;
 import Server.ServerResponse;
+import Server.StatusCode;
+import sun.security.util.ByteArrayLexOrder;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Scanner;
 
 public class Client {
-    ArrayList<Observer> observers;
-    public ClientSocket socket;
-    private HashMap<String, Conversation> conversations;
-    private String nickname, password, ip;
-    private int port;
 
+    private static String SERVER_ADDRESS = "192.168.1.70";
+    private static int PORT = 8081;
+    private Socket server;
+    private ObjectOutputStream oos = null;
+    private ObjectInputStream ois = null;
 
-    //region Getters and Setters
-    public String getIP(){
-        return ip;
-    }
-    public int getPort(){
-        return port;
-    }
-    //endregion
+    private String username;
 
-    //region Constructors
-    public Client(String nickname, String password,String ip, int port) {
-        this.nickname = nickname;
-        this.password = password;
-        this.ip = ip;
-        this.port = port;
-        conversations = new HashMap<>();
-        observers  =new ArrayList<>();
-        socket = new ClientSocket(port, this);
-        socket.start();
-    }
-    //endregion
+    public Client(String username) {
+        this.username = username;
 
-    //region Methods
-    public void addObserver(Observer obs){
-        observers.add(obs);
     }
 
+    public void login(){
 
-    public void onMessageReceive(Message message){
-        /*
-        if(!conversations.containsKey(genKey(message.getSenderIP(), message.getSenderPort()))){
-            conversations.put(genKey(message.getSenderIP(), message.getSenderPort()), new Conversation());
+    }
+
+    public void logout(){
+
+    }
+
+    public void sendMessage(){
+
+    }
+
+    public void startConversation(String conversationID){
+
+    }
+
+    public ArrayList<String> getAllFriends() throws IOException, ClassNotFoundException {
+        return (ArrayList<String>) serverRequest("GET /user/"+username+"/friends").getResponse();
+    }
+
+    public StatusCode addFriend(String friend){
+        try {
+            return serverRequest("POST /user/"+username+"/friends/add friend="+friend).getStatusCode();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
-
-        Conversation c = conversations.get(genKey(message.getSenderIP(), message.getSenderPort()));
-        c.addMessage(message);
-        System.out.println(message.getSenderIP() +": " + message.getMessage());
-        notifyObservers(c);
-        */
+        return StatusCode.ERROR;
     }
 
-    public void sendMessage(String destIP, int destPort, String msg){
-        /*
-        Message message = new Message(ip,destIP,port, destPort, msg);
-
-        if(!conversations.containsKey(genKey(destIP, destPort))){
-            conversations.put(genKey(destIP, destPort), new Conversation());
+    public void removeFriend(String friend){
+        try {
+            serverRequest("POST /user/"+username+"/friends/remove friend="+friend);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
-
-        Conversation c = conversations.get(genKey(destIP, destPort));
-        c.addMessage(message);
-        socket.sendDP(message);
-        notifyObservers(c);
-        */
     }
 
-    public ServerResponse requestServer(ServerRequest sr) throws IOException, ClassNotFoundException {
-        Socket s  = new Socket("127.0.0.1", 8081);
+    public ServerResponse serverRequest(String line) throws IOException, ClassNotFoundException {
+        server = new Socket(SERVER_ADDRESS, PORT);
+        oos = new ObjectOutputStream(server.getOutputStream());
+        ois = new ObjectInputStream(server.getInputStream());
 
-        ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-        ObjectInputStream is = new ObjectInputStream(s.getInputStream());
+        oos.writeObject(line);
 
-        oos.writeObject(sr);
+        ServerResponse sr = (ServerResponse) ois.readObject();
+        System.out.println(sr.getResponse());
 
-        ServerResponse resp = (ServerResponse) is.readObject();
         oos.close();
-        is.close();
-        s.close();
-
-        return resp;
+        ois.close();
+        return sr;
     }
 
-    private void notifyObservers(Conversation c){
-        for(Observer obs : observers){
-            obs.update(c);
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        Client client = new Client("Ciscomarte");
+        Scanner scanner = new Scanner(System.in);
+        String line = scanner.nextLine();
+        while(true){
+            if(line.equals("EXIT")){
+                break;
+            }
+
+            client.serverRequest(line);
+
+            line = scanner.nextLine();
         }
     }
-
-    private String genKey(String ip, int port){
-        return ip + ":" + Integer.toString(port);
-    }
-    //endregion
 }
-

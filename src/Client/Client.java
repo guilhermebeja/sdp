@@ -2,7 +2,6 @@ package Client;
 
 import Server.ServerResponse;
 import Server.StatusCode;
-import sun.security.util.ByteArrayLexOrder;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -2,26 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f72cc17e-a2e4-4a0b-95cb-8f4a2cfa0310" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/GUI/build.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/lib/CopyLibs/org-netbeans-modules-java-j2seproject-copylibstask.jar" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/lib/nblibraries.properties" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/manifest.mf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/nbproject/build-impl.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/nbproject/genfiles.properties" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/nbproject/project.properties" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/nbproject/project.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/src/UserInterface/ChatPanel.form" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/src/UserInterface/ChatPanel.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/src/UserInterface/ClientInterface.form" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/GUI/src/UserInterface/ClientInterface.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/projectSDP.iml" afterPath="$PROJECT_DIR$/projectSDP.iml" />
-      <change beforePath="$PROJECT_DIR$/src/Client/App.java" afterPath="" />
       <change beforePath="$PROJECT_DIR$/src/Client/Client.java" afterPath="$PROJECT_DIR$/src/Client/Client.java" />
-      <change beforePath="$PROJECT_DIR$/src/Client/ClientSocket.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/Client/IPConnection.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/User.java" afterPath="$PROJECT_DIR$/src/Entities/User.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -50,38 +32,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Client.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Client/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="56" column="32" lean-forward="false" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
+            <state relative-caret-position="360">
+              <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClientUI.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/GUI/UI/src/UI/ClientUI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1080">
-              <caret line="173" column="0" lean-forward="true" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#10029#0" expanded="true" />
-                <element signature="imports" expanded="true" />
-                <element signature="e#1423#1512#0" expanded="true" />
-                <element signature="e#2126#2127#0" expanded="true" />
-                <element signature="e#2196#2197#0" expanded="true" />
-                <element signature="e#2759#2933#0" expanded="true" />
-                <element signature="e#2932#2933#0" expanded="true" />
-                <element signature="e#3083#3084#0" expanded="true" />
-                <element signature="e#3145#3146#0" expanded="true" />
-                <element signature="e#3356#3530#0" expanded="true" />
-                <element signature="e#3529#3530#0" expanded="true" />
-                <element signature="e#7996#8083#0" expanded="true" />
-                <element signature="e#9470#9471#0" expanded="true" />
-                <element signature="e#9533#9534#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -168,8 +125,8 @@
         <option value="$PROJECT_DIR$/src/UI/ClientUI.java" />
         <option value="$PROJECT_DIR$/src/UI/ClientUI.form" />
         <option value="$PROJECT_DIR$/src/Server/Client.java" />
-        <option value="$PROJECT_DIR$/src/Client/Client.java" />
         <option value="$PROJECT_DIR$/GUI/UI/src/UI/ClientUI.java" />
+        <option value="$PROJECT_DIR$/src/Client/Client.java" />
       </list>
     </option>
   </component>
@@ -207,49 +164,6 @@
             <path>
               <item name="sdp" type="b2602c69:ProjectViewProjectNode" />
               <item name="sdp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sdp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sdp" type="462c0819:PsiDirectoryNode" />
-              <item name="GUI" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sdp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sdp" type="462c0819:PsiDirectoryNode" />
-              <item name="GUI" type="462c0819:PsiDirectoryNode" />
-              <item name="UI" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sdp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sdp" type="462c0819:PsiDirectoryNode" />
-              <item name="GUI" type="462c0819:PsiDirectoryNode" />
-              <item name="UI" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sdp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sdp" type="462c0819:PsiDirectoryNode" />
-              <item name="GUI" type="462c0819:PsiDirectoryNode" />
-              <item name="UI" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="UI" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sdp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sdp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sdp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sdp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Client" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sdp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sdp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Server" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -497,7 +411,7 @@
       <updated>1514301141801</updated>
       <workItem from="1516635876330" duration="23101000" />
       <workItem from="1516661252477" duration="1044000" />
-      <workItem from="1516662320635" duration="5554000" />
+      <workItem from="1516662320635" duration="5731000" />
     </task>
     <task id="LOCAL-00001" summary="zx">
       <created>1514312939328</created>
@@ -604,11 +518,18 @@
       <option name="project" value="LOCAL" />
       <updated>1516665057204</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="server update">
+      <created>1516667889163</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1516667889163</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30737000" />
+    <option name="totallyTimeSpent" value="30914000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1219,16 +1140,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="56" column="32" lean-forward="false" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GUI/UI/src/UI/ClientUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1080">
@@ -1248,6 +1159,16 @@
             <element signature="e#7996#8083#0" expanded="true" />
             <element signature="e#9470#9471#0" expanded="true" />
             <element signature="e#9533#9534#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Client/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

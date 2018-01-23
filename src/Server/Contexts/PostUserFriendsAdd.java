@@ -21,8 +21,14 @@ public class PostUserFriendsAdd implements ResponseContext{
 
         if(u.isPresent()){
             for(String friend : params.getParameter("friend")){
-                if(Database.getUserByUsername(friend).isPresent()){
+                if(username.equals(friend)){
+                    return new ServerResponse(StatusCode.FORBBIDEN, "You can't add yourself");
+                }
+                if(Database.getUserByUsername(friend).isPresent() ){
                     u.get().addFriend(friend);
+                }
+                else {
+                    return new ServerResponse(StatusCode.NOT_FOUND, "Friend \"" +friend+ "\" not found");
                 }
             }
 

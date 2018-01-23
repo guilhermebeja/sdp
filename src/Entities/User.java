@@ -2,12 +2,13 @@ package Entities;
 
 import DataStructures.Conversation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Identifies a user
  */
-public class User {
+public class User implements Serializable{
     private String username, password, ip;
     private int port;
 

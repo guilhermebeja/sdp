@@ -58,5 +58,7 @@ public class Conversation implements Serializable {
 
     public Conversation(int id) {
         this.id = id;
+        users = new ArrayList<>();
+        messages = new ArrayList<>();
     }
 }

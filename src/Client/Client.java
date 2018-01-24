@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class Client {
 
-    private static String SERVER_ADDRESS = "localhost";
+    private static String SERVER_ADDRESS = "192.168.1.70";
     private static int PORT = 8081;
     private Socket server;
     private ObjectOutputStream oos = null;
@@ -65,6 +65,7 @@ public class Client {
         }
 
         Conversation c = new Conversation(conversationID);
+        System.out.println();
         c.setMessages((ArrayList<Message>) res.getResponse());
 
         return c;

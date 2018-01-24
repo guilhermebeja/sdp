@@ -32,6 +32,9 @@ public class ClientSocket extends Thread{
                 if(soc.getInputStream().available()!=0){
                     try{
                         ServerRequest req = new ServerRequest((String)ois.readObject(), soc.getInetAddress().getHostAddress(), soc.getPort());
+                        System.out.println("===================");
+                        System.out.println("Client Request:");
+                        System.out.println(req);
                         if(req.getRequestType().equals(RequestType.DISCONNECT)){
                             break;
                         }

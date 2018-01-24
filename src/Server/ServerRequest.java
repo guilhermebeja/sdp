@@ -81,6 +81,11 @@ public class ServerRequest implements Serializable{
 
     }
 
+    @Override
+    public String toString() {
+        return "Type: "+ requestType + "\nPath: " + path;
+    }
+
     //endregion
 
 }

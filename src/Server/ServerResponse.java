@@ -1,6 +1,8 @@
 package Server;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class ServerResponse implements Serializable{
     private StatusCode statusCode;
@@ -26,6 +28,11 @@ public class ServerResponse implements Serializable{
     public ServerResponse(StatusCode statusCode, Object response) {
         this.statusCode = statusCode;
         this.response = response;
+    }
+
+    @Override
+    public String toString() {
+        return "Status: " + statusCode + "\nResponse: " + response;
     }
     //endregion
 }

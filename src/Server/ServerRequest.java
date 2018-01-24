@@ -51,6 +51,9 @@ public class ServerRequest implements Serializable{
         else if(type.equals("POST")){
             requestType = RequestType.POST;
         }
+        else if(type.equals("DISCONNECT")){
+            requestType = RequestType.DISCONNECT;
+        }
         else{
             throw new RequestNotValidException("Type \""+type+"\" not valid");
         }

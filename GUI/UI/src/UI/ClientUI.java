@@ -6,13 +6,15 @@
 package UI;
 
 import Client.Client;
+import DataStructures.Conversation;
+import DataStructures.Message;
 import Server.StatusCode;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  *
@@ -22,6 +24,8 @@ public class ClientUI extends javax.swing.JFrame {
     private DefaultListModel friendListModel;
 
     private Client client;
+
+    private Conversation currentConversation;
 
     /**
      * Creates new form ClientUI
@@ -42,14 +46,7 @@ public class ClientUI extends javax.swing.JFrame {
     public void refreshFriendsList(){
 
         friendListModel.setSize(0);
-        ArrayList<String> allFriends = null;
-        try {
-            allFriends = client.getAllFriends();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        ArrayList<String> allFriends = client.getAllFriends();
 
         for(String friend : allFriends){
             friendListModel.addElement(friend);
@@ -64,6 +61,35 @@ public class ClientUI extends javax.swing.JFrame {
 
     }
 
+    public void loadConversation(Conversation c){
+        currentConversation = c;
+        // clean message panel
+        conversationArea.setText("");
+
+        // Sort messages by time
+        c.getMessages().sort(new Comparator<Message>() {
+            @Override
+            public int compare(Message m1, Message m2) {
+                if(m1.getTime() < m2.getTime()){
+                    return -1;
+                }
+                else if(m1.getTime() > m2.getTime()){
+                    return 1;
+                }
+                else{
+                    return 0;
+                }
+            }
+        });
+
+        for(Message m : c.getMessages()){
+            addMessage(m.getContent());
+        }
+    }
+
+    public void addMessage(String content){
+        conversationArea.setText(conversationArea.getText()+content+"\n---------------");
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -76,6 +102,13 @@ public class ClientUI extends javax.swing.JFrame {
         friendText = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         friendList = new javax.swing.JList<>();
+        chatPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        conversationArea = new javax.swing.JTextPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        sendMsgText = new javax.swing.JTextArea();
+        sendMsgButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         removeFriendButton.setText("Remove");
         removeFriendButton.addActionListener(new java.awt.event.ActionListener() {
@@ -114,6 +147,11 @@ public class ClientUI extends javax.swing.JFrame {
                 friendListMouseClicked(evt);
             }
         });
+        friendList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                friendListValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(friendList);
 
         javax.swing.GroupLayout friendsPanelLayout = new javax.swing.GroupLayout(friendsPanel);
@@ -138,7 +176,60 @@ public class ClientUI extends javax.swing.JFrame {
                     .addComponent(addFriendButton)
                     .addComponent(friendText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        chatPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jScrollPane2.setViewportView(conversationArea);
+
+        sendMsgText.setColumns(20);
+        sendMsgText.setRows(5);
+        jScrollPane3.setViewportView(sendMsgText);
+
+        sendMsgButton.setText("Send");
+        sendMsgButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendMsgButtonActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout chatPanelLayout = new javax.swing.GroupLayout(chatPanel);
+        chatPanel.setLayout(chatPanelLayout);
+        chatPanelLayout.setHorizontalGroup(
+            chatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(chatPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(chatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(chatPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(chatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(sendMsgButton, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        chatPanelLayout.setVerticalGroup(
+            chatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(chatPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(chatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(chatPanelLayout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sendMsgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -149,13 +240,17 @@ public class ClientUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(friendsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(576, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(friendsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(chatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(friendsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -194,6 +289,21 @@ public class ClientUI extends javax.swing.JFrame {
         friendText.setBackground(Color.WHITE);
     }//GEN-LAST:event_friendTextMouseClicked
 
+    private void friendListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_friendListValueChanged
+        Conversation conv = client.startConversation(Utilities.generateConversationID(client.getUsername()+friendListModel.getElementAt(evt.getFirstIndex())));
+        loadConversation(conv);
+    }//GEN-LAST:event_friendListValueChanged
+
+    private void sendMsgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMsgButtonActionPerformed
+        client.sendMessage(currentConversation.getId(), sendMsgText.getText());
+        addMessage(sendMsgText.getText());
+    }//GEN-LAST:event_sendMsgButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Conversation conv = client.startConversation(currentConversation.getId());
+        loadConversation(conv);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -231,11 +341,18 @@ public class ClientUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addFriendButton;
+    private javax.swing.JPanel chatPanel;
+    private javax.swing.JTextPane conversationArea;
     private javax.swing.JList<String> friendList;
     private javax.swing.JPopupMenu friendListRightClick;
     private javax.swing.JTextField friendText;
     private javax.swing.JPanel friendsPanel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuItem removeFriendButton;
+    private javax.swing.JButton sendMsgButton;
+    private javax.swing.JTextArea sendMsgText;
     // End of variables declaration//GEN-END:variables
 }

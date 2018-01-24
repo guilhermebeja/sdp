@@ -15,7 +15,7 @@ public class GetConversationMessages implements ResponseContext{
             return new ServerResponse(StatusCode.BAD_REQUEST, "Conversation ID not provided");
         }
 
-        String id = params.getParameter("id").get(0);
+        int id = Integer.parseInt(params.getParameter("id").get(0));
 
         Optional<Conversation> conv = Database.getConversationByID(id);
 

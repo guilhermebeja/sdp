@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Message implements Serializable{
     private String sender; // username
-    private String conversation; // Conversation ID
+    private int conversation; // Conversation ID
     private String content;
     private long time;
 
@@ -16,11 +16,11 @@ public class Message implements Serializable{
         this.sender = sender;
     }
 
-    public String getConversation() {
+    public int getConversation() {
         return conversation;
     }
 
-    public void setConversation(String conversation) {
+    public void setConversation(int conversation) {
         this.conversation = conversation;
     }
 
@@ -40,7 +40,7 @@ public class Message implements Serializable{
         this.time = time;
     }
 
-    public Message(String sender, String conversation, String content, long time) {
+    public Message(String sender, int conversation, String content, long time) {
         this.sender = sender;
         this.conversation = conversation;
         this.content = content;

@@ -26,6 +26,7 @@ public class PostUserFriendsAdd implements ResponseContext{
                 }
                 if(Database.getUserByUsername(friend).isPresent() ){
                     u.get().addFriend(friend);
+
                 }
                 else {
                     return new ServerResponse(StatusCode.NOT_FOUND, "Friend \"" +friend+ "\" not found");

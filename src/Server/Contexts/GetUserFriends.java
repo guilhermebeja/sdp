@@ -6,6 +6,7 @@ import Server.Parameters;
 import Server.ServerResponse;
 import Server.StatusCode;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class GetUserFriends implements ResponseContext {
@@ -21,7 +22,8 @@ public class GetUserFriends implements ResponseContext {
         Optional<User> u = Database.getUserByUsername(username);
 
         if(u.isPresent()){
-            return new ServerResponse(StatusCode.OK, u.get().getFriends());
+            ArrayList<String> test = u.get().getFriends();
+            return new ServerResponse(StatusCode.OK, test);
         }
 
         else{

@@ -12,7 +12,7 @@ public class PostConversationRemoveUser implements ResponseContext{
     @Override
     public ServerResponse getResponse(Parameters params) {
         if(params.containsParameter("id") && params.containsParameter("username")){
-            String id = params.getParameter("id").get(0); // conversation id
+            int id = Integer.parseInt(params.getParameter("id").get(0));
 
             Optional<Conversation> c = Database.getConversationByID(id);
 

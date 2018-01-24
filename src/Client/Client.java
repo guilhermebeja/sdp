@@ -1,18 +1,21 @@
 package Client;
 
+import DataStructures.Conversation;
+import DataStructures.Message;
 import Server.ServerResponse;
 import Server.StatusCode;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Client {
 
-    private static String SERVER_ADDRESS = "192.168.1.70";
+    private static String SERVER_ADDRESS = "localhost";
     private static int PORT = 8081;
     private Socket server;
     private ObjectOutputStream oos = null;
@@ -20,8 +23,21 @@ public class Client {
 
     private String username;
 
+    public String getUsername() {
+        return username;
+    }
+
     public Client(String username) {
         this.username = username;
+        server = new Socket();
+        try {
+            server.connect(new InetSocketAddress(SERVER_ADDRESS, PORT), 2000);
+
+            oos = new ObjectOutputStream(server.getOutputStream());
+            ois = new ObjectInputStream(server.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -33,54 +49,74 @@ public class Client {
 
     }
 
-    public void sendMessage(){
+    public void sendMessage(int conversationID, String content){
+        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
+        serverRequest("POST /conversations/"+conversationID+"/messages/add sender="+username+"&content="+content.replace(" ", "+")+"&timer="+System.currentTimeMillis(), res);
 
     }
 
-    public void startConversation(String conversationID){
+    public Conversation startConversation(int conversationID){
+        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
 
+        serverRequest("GET /conversations/"+conversationID+"/messages", res);
+
+        if(res.getStatusCode().equals(StatusCode.NOT_FOUND)){
+            serverRequest("POST /conversation/"+conversationID+"/create", res);
+        }
+
+        Conversation c = new Conversation(conversationID);
+        c.setMessages((ArrayList<Message>) res.getResponse());
+
+        return c;
     }
 
-    public ArrayList<String> getAllFriends() throws IOException, ClassNotFoundException {
-        return (ArrayList<String>) serverRequest("GET /user/"+username+"/friends").getResponse();
+    public ArrayList<String> getAllFriends() {
+        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
+
+        serverRequest("GET /user/"+username+"/friends", res);
+
+        if(res.getStatusCode().equals(StatusCode.OK)){
+            return (ArrayList<String>)res.getResponse();
+        }
+
+        return new ArrayList<String>();
     }
 
     public StatusCode addFriend(String friend){
-        try {
-            return serverRequest("POST /user/"+username+"/friends/add friend="+friend).getStatusCode();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return StatusCode.ERROR;
+        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
+
+        serverRequest("POST /user/"+username+"/friends/add friend="+friend, res);
+        return res.getStatusCode();
+
     }
 
     public void removeFriend(String friend){
+        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
+
+        serverRequest("POST /user/"+username+"/friends/remove friend="+friend, res);
+
+    }
+
+    public void serverRequest(String line, ServerResponse resp){
+        ServerResponse sr = new ServerResponse(StatusCode.ERROR, "Internal Error");
+
         try {
-            serverRequest("POST /user/"+username+"/friends/remove friend="+friend);
+            oos.writeObject(line);
+            Object o = ois.readObject();
+            sr = (ServerResponse) o;
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        finally {
+            resp.setStatusCode(sr.getStatusCode());
+            resp.setResponse(sr.getResponse());
+
+        }
+
     }
-
-    public ServerResponse serverRequest(String line) throws IOException, ClassNotFoundException {
-        server = new Socket(SERVER_ADDRESS, PORT);
-        oos = new ObjectOutputStream(server.getOutputStream());
-        ois = new ObjectInputStream(server.getInputStream());
-
-        oos.writeObject(line);
-
-        ServerResponse sr = (ServerResponse) ois.readObject();
-        System.out.println(sr.getResponse());
-
-        oos.close();
-        ois.close();
-        return sr;
-    }
-
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Client client = new Client("Ciscomarte");
@@ -91,9 +127,14 @@ public class Client {
                 break;
             }
 
-            client.serverRequest(line);
+            ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
 
+            client.serverRequest(line, res);
+
+            System.out.println(res);
             line = scanner.nextLine();
         }
     }
+
+
 }

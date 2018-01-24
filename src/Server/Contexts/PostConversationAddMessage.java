@@ -13,7 +13,7 @@ public class PostConversationAddMessage implements ResponseContext {
     @Override
     public ServerResponse getResponse(Parameters params) {
         if(params.containsParameter("id") && params.containsParameter("sender") && params.containsParameter("content") && params.containsParameter("time")){
-            String id = params.getParameter("id").get(0); // conversation id
+            int id = Integer.parseInt(params.getParameter("id").get(0));
             String sender = params.getParameter("sender").get(0);
             String content = params.getParameter("content").get(0);
             String time = params.getParameter("time").get(0);

@@ -17,12 +17,15 @@ public class Server extends Thread{
     private ServerSocket serverSoc;
     private boolean listen = false;
 
+    private ArrayList<ClientSocket> sockets = new ArrayList<>();
+
     //region Constructor
     public Server(int port) {
         try {
             File db = new File("./files/db.dat");
             if(db.exists()){
                 loadDB();
+
             }
             else{
                 db.getParentFile().mkdirs();
@@ -33,6 +36,8 @@ public class Server extends Thread{
             this.listen = true;
             mapper = new Mapper();
             configMapper();
+
+            System.out.println("Server running on port: " + serverSoc.getLocalPort());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -119,10 +124,10 @@ public class Server extends Thread{
     public void run(){
         try{
             while(listen){
-                Socket soc = serverSoc.accept();
+                ClientSocket cs = new ClientSocket(serverSoc.accept(), this);
+                sockets.add(cs);
+                cs.start();
 
-                reply(soc);
-                soc.close();
             }
             serverSoc.close();
         }catch(IOException e){
@@ -152,40 +157,19 @@ public class Server extends Thread{
 
     }
 
-    public void reply(Socket soc){
+    public ServerResponse respond(ServerRequest req){
 
-        try{
+        ServerResponse rs = new ServerResponse(StatusCode.OK, "");
 
-            ObjectInputStream oos = new ObjectInputStream(soc.getInputStream());
-            ObjectOutputStream os = new ObjectOutputStream(soc.getOutputStream());
-
-
-            ServerRequest serverRequest = null;
-            ServerResponse rs = new ServerResponse(StatusCode.OK, "");
-
-            try {
-                serverRequest = new ServerRequest((String)oos.readObject(), soc.getInetAddress().getHostAddress(), soc.getPort());
-                ResponseContext context = mapper.getContext(serverRequest);
-                if(context != null){
-                    rs = context.getResponse(serverRequest.getParameters());
-                }
-                else{
-                    rs = new ServerResponse(StatusCode.ERROR, "Request not valid!");
-                }
-
-            } catch (RequestNotValidException e) {
-                rs = new ServerResponse(StatusCode.BAD_REQUEST, e.getMessage());
-            }finally {
-                os.writeObject(rs);
-                //os.close();
-                //oos.close();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        ResponseContext context = mapper.getContext(req);
+        if(context != null){
+            rs = context.getResponse(req.getParameters());
         }
+        else{
+            rs = new ServerResponse(StatusCode.ERROR, "Request not valid!");
+        }
+
+        return rs;
     }
 
 

@@ -53,8 +53,8 @@ public class Database implements Serializable{
         return users.stream().anyMatch(user);
     }
 
-    public static Optional<Conversation> getConversationByID(String id){
-        return conversations.stream().filter(c -> c.getId().equals(id)).findFirst();
+    public static Optional<Conversation> getConversationByID(int id){
+        return conversations.stream().filter(c -> c.getId()==id).findFirst();
     }
 
     public static boolean containsConversation(Predicate<Conversation> conversation){

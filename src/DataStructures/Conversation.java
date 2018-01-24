@@ -5,17 +5,17 @@ import java.util.ArrayList;
 
 public class Conversation implements Serializable {
 
-    private String id;
+    private int id;
     private ArrayList<String> users; // usernames
     private ArrayList<Message> messages;
 
     //region Getters and Setters
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -56,7 +56,7 @@ public class Conversation implements Serializable {
     //endregion
 
 
-    public Conversation(String id) {
+    public Conversation(int id) {
         this.id = id;
     }
 }

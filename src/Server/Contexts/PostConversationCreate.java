@@ -10,9 +10,9 @@ public class PostConversationCreate implements ResponseContext{
     @Override
     public ServerResponse getResponse(Parameters params) {
         if(params.containsParameter("id") && params.containsParameter("username")){
-            String id = params.getParameter("id").get(0);
+            int id = Integer.parseInt(params.getParameter("id").get(0));
 
-            if(Database.containsConversation(conv -> params.containsParameter(id))){
+            if(Database.containsConversation(conv -> conv.getId()==id)){
                 return new ServerResponse(StatusCode.FORBBIDEN, "Conversation already exists");
             }
             Conversation c = new Conversation(id);

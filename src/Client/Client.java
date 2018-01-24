@@ -51,17 +51,17 @@ public class Client {
 
     public void sendMessage(int conversationID, String content){
         ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-        serverRequest("POST /conversations/"+conversationID+"/messages/add sender="+username+"&content="+content.replace(" ", "+")+"&timer="+System.currentTimeMillis(), res);
+        serverRequest("POST /conversation/"+conversationID+"/messages/add sender="+username+"&content="+content.replace(" ", "+")+"&timer="+System.currentTimeMillis(), res);
 
     }
 
     public Conversation startConversation(int conversationID){
         ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
 
-        serverRequest("GET /conversations/"+conversationID+"/messages", res);
+        serverRequest("GET /conversation/"+conversationID+"/messages", res);
 
         if(res.getStatusCode().equals(StatusCode.NOT_FOUND)){
-            serverRequest("POST /conversations/"+conversationID+"/create", res);
+            serverRequest("POST /conversation/"+conversationID+"/create username="+getUsername(), res);
         }
 
         Conversation c = new Conversation(conversationID);

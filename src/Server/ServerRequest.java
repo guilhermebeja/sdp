@@ -8,6 +8,7 @@ public class ServerRequest implements Serializable{
     private RequestType requestType;
     private String path[];
     private Parameters parameters;
+    private String url;
 
     //region Getters and Setters
     public RequestType getRequestType() {
@@ -35,6 +36,7 @@ public class ServerRequest implements Serializable{
 
     //region Constructors
     public ServerRequest(String url, String ip, int port) throws RequestNotValidException{
+        this.url = url;
         parameters = new Parameters();
 
         String[] parts = url.split(" ");
@@ -83,7 +85,7 @@ public class ServerRequest implements Serializable{
 
     @Override
     public String toString() {
-        return "Type: "+ requestType + "\nPath: " + path;
+        return "Url: "+ url;
     }
 
     //endregion

@@ -51,7 +51,7 @@ public class Client {
 
     public void sendMessage(int conversationID, String content){
         ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-        serverRequest("POST /conversation/"+conversationID+"/messages/add sender="+username+"&content="+content.replace(" ", "+")+"&timer="+System.currentTimeMillis(), res);
+        serverRequest("POST /conversation/"+conversationID+"/messages/add sender="+username+"&content="+content.replace(" ", "+")+"&time="+System.currentTimeMillis(), res);
 
     }
 
@@ -65,8 +65,10 @@ public class Client {
         }
 
         Conversation c = new Conversation(conversationID);
-        System.out.println();
-        c.setMessages((ArrayList<Message>) res.getResponse());
+        if(((ArrayList)res.getResponse()).size()!=0){
+            c.setMessages((ArrayList<Message>) res.getResponse());
+        }
+
 
         return c;
     }

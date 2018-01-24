@@ -61,7 +61,7 @@ public class Client {
         serverRequest("GET /conversations/"+conversationID+"/messages", res);
 
         if(res.getStatusCode().equals(StatusCode.NOT_FOUND)){
-            serverRequest("POST /conversation/"+conversationID+"/create", res);
+            serverRequest("POST /conversations/"+conversationID+"/create", res);
         }
 
         Conversation c = new Conversation(conversationID);

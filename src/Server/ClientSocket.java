@@ -20,21 +20,22 @@ public class ClientSocket extends Thread{
 
     }
 
+    public void notifyClient(Object toSend){
+
+    }
+
     @Override
     public void run() {
 
         try {
             ois = new ObjectInputStream(soc.getInputStream());
             oos = new ObjectOutputStream(soc.getOutputStream());
-
+            boolean b = false;
             ServerResponse rs = new ServerResponse(StatusCode.ERROR, "Internal Server Error");
             while(true){
                 if(soc.getInputStream().available()!=0){
                     try{
                         ServerRequest req = new ServerRequest((String)ois.readObject(), soc.getInetAddress().getHostAddress(), soc.getPort());
-                        System.out.println("===================");
-                        System.out.println("Client Request:");
-                        System.out.println(req);
                         if(req.getRequestType().equals(RequestType.DISCONNECT)){
                             break;
                         }
@@ -42,11 +43,9 @@ public class ClientSocket extends Thread{
                     }
                     catch (RequestNotValidException e) {
                         e.printStackTrace();
-                    }
-                    finally{
-                        System.out.println("Server Response:");
-                        System.out.println(rs);
-                        System.out.println("===================");
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } finally{
                         oos.writeObject(rs);
                         oos.reset();
                     }
@@ -57,8 +56,6 @@ public class ClientSocket extends Thread{
             oos.close();
             soc.close();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 

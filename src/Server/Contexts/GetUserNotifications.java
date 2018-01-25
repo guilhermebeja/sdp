@@ -1,5 +1,6 @@
 package Server.Contexts;
 
+import DataStructures.ClientNotification;
 import Entities.User;
 import Server.Database;
 import Server.Parameters;
@@ -8,7 +9,7 @@ import Server.StatusCode;
 
 import java.util.Optional;
 
-public class PostUserFriendsAdd implements ResponseContext{
+public class GetUserNotifications implements ResponseContext{
     @Override
     public ServerResponse getResponse(Parameters params) {
         if(!params.containsParameter("username")){
@@ -20,23 +21,13 @@ public class PostUserFriendsAdd implements ResponseContext{
         Optional<User> u = Database.getUserByUsername(username);
 
         if(u.isPresent()){
-            for(String friend : params.getParameter("friend")){
-                if(username.equals(friend)){
-                    return new ServerResponse(StatusCode.FORBBIDEN, "You can't add yourself");
-                }
-                if(Database.getUserByUsername(friend).isPresent() ){
-                    u.get().addFriend(friend);
-                }
-                else {
-                    return new ServerResponse(StatusCode.NOT_FOUND, "Friend \"" +friend+ "\" not found");
-                }
-            }
 
-            return new ServerResponse(StatusCode.OK, "Friend request sent");
+            return new ServerResponse(StatusCode.OK, u.get().getNetAddress());
         }
 
         else{
             return new ServerResponse(StatusCode.NOT_FOUND, "User \"" + username + "\" not found");
         }
+
     }
 }

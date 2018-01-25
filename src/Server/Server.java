@@ -137,7 +137,9 @@ public class Server extends Thread{
 
     private void configMapper(){
         mapper.registerRoute(RequestType.GET, "/user/:username/ip", new GetUserIP()); // returns user IP. //GET /user/ciscomarte/ip
+        mapper.registerRoute(RequestType.GET, "/user/:username/notifications", new GetUserNotifications());
         mapper.registerRoute(RequestType.GET, "/user/:username/friends", new GetUserFriends()); // returns user friend list (list of usernames// )
+        mapper.registerRoute(RequestType.POST,"/user/:username/friends/request", new PostUserRequestFriend());
         mapper.registerRoute(RequestType.POST,"/user/:username/friends/add", new PostUserFriendsAdd());
         mapper.registerRoute(RequestType.POST,"/user/:username/friends/remove", new PostUserFriendsRemove());
         mapper.registerRoute(RequestType.POST,"/user/create", new PostUserCreate());
@@ -150,11 +152,8 @@ public class Server extends Thread{
         mapper.registerRoute(RequestType.POST,"/conversation/:id/users/add", new PostConversationAddUser());
         mapper.registerRoute(RequestType.POST,"/conversation/:id/users/remove", new PostConversationRemoveUser());
 
-        //mapper.registerRoute(RequestType.GET, "/login", new Login());
-        // register user
-        // get conversations, friends require authentication.
-
-
+        mapper.registerRoute(RequestType.POST, "/login", new Login());
+        mapper.registerRoute(RequestType.POST, "/logout", new Logout());
     }
 
     public ServerResponse respond(ServerRequest req){

@@ -8,7 +8,8 @@ import Server.StatusCode;
 
 import java.util.Optional;
 
-public class PostUserFriendsAdd implements ResponseContext{
+public class PostUserRequestFriend implements ResponseContext{
+
     @Override
     public ServerResponse getResponse(Parameters params) {
         if(!params.containsParameter("username")){
@@ -25,7 +26,9 @@ public class PostUserFriendsAdd implements ResponseContext{
                     return new ServerResponse(StatusCode.FORBBIDEN, "You can't add yourself");
                 }
                 if(Database.getUserByUsername(friend).isPresent() ){
-                    u.get().addFriend(friend);
+                    u.get().addPendingFriend(friend);
+                    Database.getUserByUsername(friend).get().getPendingAccept().add(username);
+
                 }
                 else {
                     return new ServerResponse(StatusCode.NOT_FOUND, "Friend \"" +friend+ "\" not found");

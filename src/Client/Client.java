@@ -1,29 +1,23 @@
 package Client;
 
-import DataStructures.ClientNotification;
+
 import DataStructures.Conversation;
-import DataStructures.Message;
 import Exceptions.ClientException;
 import Exceptions.ServerConnectionTimeoutException;
 import Interfaces.Observer;
-import Server.ClientUpdateWorker;
-import Server.ServerResponse;
-import Server.StatusCode;
-import com.sun.corba.se.spi.activation.Server;
+import Server.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Array;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.function.Function;
 
 public class Client extends Thread{
     private static final String SERVER_ADDRESS = "localhost";
-    private static final int PORT = 8081;
+    private static final int PORT = 7777;
     private Socket server;
     private ObjectOutputStream oos = null;
     private ObjectInputStream ois = null;
@@ -130,6 +124,14 @@ public class Client extends Thread{
         }
     }
 
+    public void newIncomingFriendRequest(String username){
+        if(friends.stream().noneMatch(f -> f.username.equals(username))){
+            Friend nf = new Friend(username, false, true);
+            friends.add(nf);
+            observers.forEach(o->o.newReceivedFriendRequest(nf));
+        }
+    }
+
     public void populateFriendList(){
         serverRequest("GET /user/"+this.username+"/friends", rsp -> {
             if(rsp.getStatusCode().equals(StatusCode.OK)){
@@ -153,6 +155,12 @@ public class Client extends Thread{
         });
     }
 
+    private void processNotification(Notification notification){
+        if(notification.type.equals(Notification.NotificationType.NEW_FRIEND_REQUEST)){
+            newIncomingFriendRequest((String)notification.data);
+        }
+    }
+
     @Override
     public void run() {
         try {
@@ -166,7 +174,9 @@ public class Client extends Thread{
                         }
                     }
                     else{
-                        System.out.println("Response has no reqID");
+                        if(sr.getStatusCode().equals(StatusCode.NOTIFICATION)){
+                            processNotification((Notification)sr.getResponse());
+                        }
                     }
                 }
             }

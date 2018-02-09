@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Queue;
 
 public class ClientSocket extends Thread{
 
@@ -18,6 +20,7 @@ public class ClientSocket extends Thread{
     public boolean isLoggedIn = false;
     public String username;
 
+    public ArrayList<ServerResponse> notificationStack = new ArrayList<>();
     public ClientSocket(Socket soc, Server server){
         this.soc = soc;
         this.server = server;
@@ -30,9 +33,10 @@ public class ClientSocket extends Thread{
         }
     }
 
-    public void sendMessage(ServerResponse toSend){
+    public synchronized void sendMessage(ServerResponse toSend){
         try {
             oos.writeObject(Utilities.encrypt(toSend));
+            soc.getOutputStream().flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,6 +59,11 @@ public class ClientSocket extends Thread{
                     // Disconnect Request, end thread
                     if(req.getRequestType().equals(RequestType.DISCONNECT)){
                         break;
+                    }
+                }
+                else{
+                    if(notificationStack.size() > 0){
+                        sendMessage(notificationStack.remove(0));
                     }
                 }
             }

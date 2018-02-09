@@ -140,7 +140,7 @@ public class Server extends Thread{
      */
     public void sendNotification(String username, ServerResponse toSend){
         if(usersLogged.containsKey(username)){
-            usersLogged.get(username).sendMessage(toSend);
+            usersLogged.get(username).notificationStack.add(toSend);
         }
     }
 
@@ -186,7 +186,7 @@ public class Server extends Thread{
     }
 
     public static void main(String[] args) {
-        Server server = new Server(8081);
+        Server server = new Server(7777);
         server.start();
         Scanner scanner = new Scanner(System.in);
 

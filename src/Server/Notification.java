@@ -1,6 +1,8 @@
 package Server;
 
-public class Notification {
+import java.io.Serializable;
+
+public class Notification implements Serializable{
     public enum NotificationType {
         NEW_FRIEND_REQUEST,
         NEW_MESSAGE

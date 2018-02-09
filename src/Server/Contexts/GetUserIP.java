@@ -3,15 +3,18 @@ package Server.Contexts;
 import Entities.User;
 import Server.*;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 /**
  * Gets the user data by nickname
  */
-public class GetUserIP implements ResponseContext {
+public class GetUserIP extends ResponseContext {
+    public GetUserIP(Server server) {
+        super(server);
+    }
+
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(!params.containsParameter("username")){
             return new ServerResponse(StatusCode.BAD_REQUEST, "Username not provided");
         }

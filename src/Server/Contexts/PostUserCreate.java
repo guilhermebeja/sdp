@@ -1,14 +1,15 @@
 package Server.Contexts;
 
 import Entities.User;
-import Server.Database;
-import Server.Parameters;
-import Server.ServerResponse;
-import Server.StatusCode;
+import Server.*;
 
-public class PostUserCreate implements ResponseContext {
+public class PostUserCreate extends ResponseContext {
+    public PostUserCreate(Server server) {
+        super(server);
+    }
+
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(params.containsParameter("username") && params.containsParameter("email") && params.containsParameter("password") && params.containsParameter("ip") && params.containsParameter("port")){
             String username = params.getParameter("username").get(0);
             String password = params.getParameter("password").get(0);

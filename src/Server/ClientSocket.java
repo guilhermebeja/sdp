@@ -1,6 +1,6 @@
 package Server;
 
-import Server.Exceptions.RequestNotValidException;
+import Client.Utilities;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,45 +9,52 @@ import java.net.Socket;
 
 public class ClientSocket extends Thread{
 
-    private Socket soc;
-    private Server server;
-
     ObjectInputStream ois = null;
     ObjectOutputStream oos = null;
+    private Socket soc;
+    private Server server;
+    private long lastTime = 0;
+
+    public boolean isLoggedIn = false;
+    public String username;
+
     public ClientSocket(Socket soc, Server server){
         this.soc = soc;
         this.server = server;
 
+        try {
+            ois = new ObjectInputStream(soc.getInputStream());
+            oos = new ObjectOutputStream(soc.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void notifyClient(Object toSend){
+    public void sendMessage(ServerResponse toSend){
+        try {
+            oos.writeObject(Utilities.encrypt(toSend));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void printRequest(String line){
+        System.out.println(soc.getInetAddress().toString()+ ": " + line);
     }
 
     @Override
     public void run() {
-
         try {
-            ois = new ObjectInputStream(soc.getInputStream());
-            oos = new ObjectOutputStream(soc.getOutputStream());
-            boolean b = false;
-            ServerResponse rs = new ServerResponse(StatusCode.ERROR, "Internal Server Error");
             while(true){
                 if(soc.getInputStream().available()!=0){
-                    try{
-                        ServerRequest req = new ServerRequest((String)ois.readObject(), soc.getInetAddress().getHostAddress(), soc.getPort());
-                        if(req.getRequestType().equals(RequestType.DISCONNECT)){
-                            break;
-                        }
-                        rs = server.respond(req);
-                    }
-                    catch (RequestNotValidException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } finally{
-                        oos.writeObject(rs);
-                        oos.reset();
+                    String line = (String) Utilities.decrypt((byte[])ois.readObject());
+                    printRequest(line);
+                    ServerRequest req = new ServerRequest(line, soc.getInetAddress().getHostAddress(), soc.getPort());
+                    server.respond(req, this);
+
+                    // Disconnect Request, end thread
+                    if(req.getRequestType().equals(RequestType.DISCONNECT)){
+                        break;
                     }
                 }
             }
@@ -55,10 +62,8 @@ public class ClientSocket extends Thread{
             ois.close();
             oos.close();
             soc.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 }

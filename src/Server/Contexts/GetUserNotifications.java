@@ -1,17 +1,17 @@
 package Server.Contexts;
 
-import DataStructures.ClientNotification;
 import Entities.User;
-import Server.Database;
-import Server.Parameters;
-import Server.ServerResponse;
-import Server.StatusCode;
+import Server.*;
 
 import java.util.Optional;
 
-public class GetUserNotifications implements ResponseContext{
+public class GetUserNotifications extends ResponseContext{
+    public GetUserNotifications(Server server) {
+        super(server);
+    }
+
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(!params.containsParameter("username")){
             return new ServerResponse(StatusCode.BAD_REQUEST, "Username not provided");
         }

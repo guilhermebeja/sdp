@@ -1,16 +1,17 @@
 package Server.Contexts;
 
 import DataStructures.Conversation;
-import Server.Database;
-import Server.Parameters;
-import Server.ServerResponse;
-import Server.StatusCode;
+import Server.*;
 
 import java.util.Optional;
 
-public class GetConversationMessages implements ResponseContext{
+public class GetConversationMessages extends ResponseContext{
+    public GetConversationMessages(Server server) {
+        super(server);
+    }
+
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(!params.containsParameter("id")){
             return new ServerResponse(StatusCode.BAD_REQUEST, "Conversation ID not provided");
         }

@@ -1,16 +1,17 @@
 package Server.Contexts;
 
 import Entities.User;
-import Server.Database;
-import Server.Parameters;
-import Server.ServerResponse;
-import Server.StatusCode;
+import Server.*;
 
 import java.util.Optional;
 
-public class Logout implements ResponseContext{
+public class Logout extends ResponseContext{
+    public Logout(Server server) {
+        super(server);
+    }
+
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(!params.containsParameter("username")){
             return new ServerResponse(StatusCode.BAD_REQUEST, "Missing parameters");
         }
@@ -21,6 +22,7 @@ public class Logout implements ResponseContext{
 
         if(u.isPresent()){
             u.get().setLoggedIn(false);
+            server.usersLogged.remove(username);
             return new ServerResponse(StatusCode.OK, "Logged Out");
         }
 

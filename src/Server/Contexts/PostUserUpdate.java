@@ -1,16 +1,18 @@
 package Server.Contexts;
 
 import Entities.User;
-import Server.Database;
-import Server.Parameters;
-import Server.ServerResponse;
-import Server.StatusCode;
+import Server.*;
 
 import java.util.Optional;
 
-public class PostUserUpdate implements ResponseContext {
+public class PostUserUpdate extends ResponseContext {
+
+    public PostUserUpdate(Server server) {
+        super(server);
+    }
+
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(!params.containsParameter("username")){
             return new ServerResponse(StatusCode.BAD_REQUEST, "Username not provided");
         }
@@ -29,7 +31,7 @@ public class PostUserUpdate implements ResponseContext {
                     //TODO: Logout user when username changes
                     return new ServerResponse(StatusCode.OK, "Username change");
                 }
-                return  new ServerResponse(StatusCode.FORBBIDEN, "Username taken");
+                return new ServerResponse(StatusCode.FORBBIDEN, "Username taken");
 
             }
             else if(params.containsParameter("newPassword")){

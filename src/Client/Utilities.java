@@ -1,4 +1,4 @@
-package UI;
+package Client;
 
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;

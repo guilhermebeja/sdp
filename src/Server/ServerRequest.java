@@ -60,9 +60,14 @@ public class ServerRequest implements Serializable{
             throw new RequestNotValidException("Type \""+type+"\" not valid");
         }
 
-        path = parts[1].split("/");
-
+        String pathAndParams[] = parts[1].split("\\?");
         String query=null;
+        if(pathAndParams.length == 2){
+            query = pathAndParams[1];
+        }
+
+        path = pathAndParams[0].split("/");
+
         if(parts.length==3){
             query = parts[2];
         }

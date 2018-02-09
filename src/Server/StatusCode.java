@@ -7,5 +7,6 @@ public enum StatusCode {
     FORBBIDEN,
     ERROR,
     BAD_REQUEST,
-    NOT_AVAILABLE
+    NOT_AVAILABLE,
+    NOTIFICATION
 }

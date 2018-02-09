@@ -6,10 +6,11 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/GUI/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/GUI/UI/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/GUI/UI/src/UI" />
       <excludeFolder url="file://$MODULE_DIR$/GUI/src/UserInterface" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="commons-codec:commons-codec:1.11" level="project" />
+    <orderEntry type="library" exported="" name="commons-codec:commons-codec:1.11" level="project" />
   </component>
 </module>

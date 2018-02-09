@@ -2,16 +2,17 @@ package Server.Contexts;
 
 import DataStructures.Conversation;
 import DataStructures.Message;
-import Server.Database;
-import Server.Parameters;
-import Server.ServerResponse;
-import Server.StatusCode;
+import Server.*;
 
 import java.util.Optional;
 
-public class PostConversationAddMessage implements ResponseContext {
+public class PostConversationAddMessage extends ResponseContext {
+    public PostConversationAddMessage(Server server) {
+        super(server);
+    }
+
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(params.containsParameter("id") && params.containsParameter("sender") && params.containsParameter("content") && params.containsParameter("time")){
             int id = Integer.parseInt(params.getParameter("id").get(0));
             String sender = params.getParameter("sender").get(0);

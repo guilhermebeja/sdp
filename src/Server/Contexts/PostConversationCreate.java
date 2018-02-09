@@ -1,14 +1,15 @@
 package Server.Contexts;
 
 import DataStructures.Conversation;
-import Server.Database;
-import Server.Parameters;
-import Server.ServerResponse;
-import Server.StatusCode;
+import Server.*;
 
-public class PostConversationCreate implements ResponseContext{
+public class PostConversationCreate extends ResponseContext{
+    public PostConversationCreate(Server server) {
+        super(server);
+    }
+
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(params.containsParameter("id") && params.containsParameter("username")){
             int id = Integer.parseInt(params.getParameter("id").get(0));
 

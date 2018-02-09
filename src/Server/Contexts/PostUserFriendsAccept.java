@@ -5,15 +5,14 @@ import Server.*;
 
 import java.util.Optional;
 
-public class PostUserRequestFriend extends ResponseContext{
-
-    public PostUserRequestFriend(Server server) {
+public class PostUserFriendsAccept extends ResponseContext{
+    public PostUserFriendsAccept(Server server) {
         super(server);
     }
 
     @Override
     public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
-        if(!params.containsParameter("username")){
+        if(!params.containsParameter("username") || !params.containsParameter("friend")){
             return new ServerResponse(StatusCode.BAD_REQUEST, "Username not provided");
         }
 
@@ -26,20 +25,22 @@ public class PostUserRequestFriend extends ResponseContext{
             if(username.equals(friend)){
                 return new ServerResponse(StatusCode.FORBBIDEN, "You can't add yourself");
             }
-            if(Database.getUserByUsername(friend).isPresent() ){
-                if(!u.get().getPendingFriends().contains(friend)){
-                    u.get().addPendingFriend(friend);
+            if(Database.getUserByUsername(friend).isPresent()){
+                if(u.get().getPendingAccept().contains(friend)){
+                    if(Database.getUserByUsername(friend).get().getPendingFriends().contains(username)){
+                        u.get().getFriends().add(friend);
+                        u.get().getPendingAccept().remove(friend);
+                        Database.getUserByUsername(friend).get().getFriends().add(username);
+                        Database.getUserByUsername(friend).get().getPendingFriends().remove(username);
+
+                        return new ServerResponse(StatusCode.OK, "Friend's Added");
+                    }
                 }
-                if(!Database.getUserByUsername(friend).get().getPendingAccept().contains(username)){
-                    Database.getUserByUsername(friend).get().getPendingAccept().add(username);
-                }
+                return new ServerResponse(StatusCode.ERROR, "Server Error");
             }
             else {
                 return new ServerResponse(StatusCode.NOT_FOUND, "Friend \"" +friend+ "\" not found");
             }
-
-            server.sendNotification(friend, new ServerResponse(StatusCode.NOTIFICATION, new Notification(Notification.NotificationType.NEW_FRIEND_REQUEST, username)));
-            return new ServerResponse(StatusCode.OK, "Friend request sent");
         }
 
         else{

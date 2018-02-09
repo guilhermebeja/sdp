@@ -1,16 +1,17 @@
 package Server.Contexts;
 
 import DataStructures.Conversation;
-import Server.Database;
-import Server.Parameters;
-import Server.ServerResponse;
-import Server.StatusCode;
+import Server.*;
 
 import java.util.Optional;
 
-public class PostConversationRemoveUser implements ResponseContext{
+public class PostConversationRemoveUser extends ResponseContext{
+    public PostConversationRemoveUser(Server server) {
+        super(server);
+    }
+
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(params.containsParameter("id") && params.containsParameter("username")){
             int id = Integer.parseInt(params.getParameter("id").get(0));
 

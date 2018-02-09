@@ -3,39 +3,37 @@ package Client;
 import DataStructures.ClientNotification;
 import DataStructures.Conversation;
 import DataStructures.Message;
+import Exceptions.ClientException;
+import Exceptions.ServerConnectionTimeoutException;
+import Interfaces.Observer;
 import Server.ClientUpdateWorker;
 import Server.ServerResponse;
 import Server.StatusCode;
-import UI.Contact;
+import com.sun.corba.se.spi.activation.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 public class Client extends Thread{
-
-    private static String SERVER_ADDRESS = "192.168.1.70";
-    private static int PORT = 8081;
+    private static final String SERVER_ADDRESS = "localhost";
+    private static final int PORT = 8081;
     private Socket server;
     private ObjectOutputStream oos = null;
     private ObjectInputStream ois = null;
-
-    public ArrayList<Contact> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(ArrayList<Contact> contacts) {
-        this.contacts = contacts;
-    }
-
-    private ArrayList<Contact> contacts = new ArrayList<>();
-
     private String username;
-    private ClientUpdateWorker worker;
+    private HashMap<Integer, Function<ServerResponse, Object>> waitingList = new HashMap<>();
+    private int currentID = 0;
+    private ArrayList<Conversation> conversations = new ArrayList<>();
+    private ArrayList<Friend> friends = new ArrayList<>();
+
+    public ArrayList<Observer> observers = new ArrayList<>();
 
     public String getUsername() {
         return username;
@@ -45,174 +43,154 @@ public class Client extends Thread{
         this.username = username;
     }
 
-    public Client(String username) {
-        this.username = username;
+    public ArrayList<Friend> getFriends() {
+        return friends;
+    }
+
+    public Client( ) throws ClientException{
         server = new Socket();
         try {
             server.connect(new InetSocketAddress(SERVER_ADDRESS, PORT), 2000);
-
             oos = new ObjectOutputStream(server.getOutputStream());
             ois = new ObjectInputStream(server.getInputStream());
+            start();
+
+        } catch (IOException e) {
+            throw new ServerConnectionTimeoutException("Couldn't connect to the server on \'" + SERVER_ADDRESS + ":" + PORT+"\'");
+        }
+    }
+
+    public void serverRequest(String line, Function<ServerResponse, Object> callable){
+        try {
+            int id = getNewID();
+            waitingList.put(id, callable);
+            String toSend = line.trim();
+            if(toSend.contains("?")){
+                toSend+="&reqID="+Integer.toString(id);
+            }
+            else{
+                toSend+="?reqID="+Integer.toString(id);
+            }
+            oos.writeObject(Utilities.encrypt(toSend));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    public boolean login(String username, String password){
-        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-        serverRequest("POST /login username="+username+"&password="+password, res);
-        if(res.getStatusCode().equals(StatusCode.OK)){
-            return true;
-        }
-        return false;
-    }
-
-    public boolean logout(){
-        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-        serverRequest("POST /logout username="+username, res);
-        if(res.getStatusCode().equals(StatusCode.OK)){
-            return true;
-        }
-        return false;
-    }
-
-    public String register(String username, String password, String email){
-        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-        serverRequest("POST /user/create username="+username+"&password="+password+"&email="+email, res);
-        if(res.getStatusCode().equals(StatusCode.OK)){
-            return "";
-        }
-        else{
-            return (String)res.getResponse();
-        }
-
-    }
-
-    public void sendMessage(int conversationID, String content){
-        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-        serverRequest("POST /conversation/"+conversationID+"/messages/add sender="+username+"&content="+content.replace(" ", "+")+"&time="+System.currentTimeMillis(), res);
-
-    }
-
-    public Conversation startConversation(int conversationID){
-        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-
-        serverRequest("GET /conversation/"+conversationID+"/messages", res);
-
-        if(res.getStatusCode().equals(StatusCode.NOT_FOUND)){
-            serverRequest("POST /conversation/"+conversationID+"/create username="+getUsername(), res);
-        }
-
-        Conversation c = new Conversation(conversationID);
-        if(res.getResponse() instanceof ArrayList){
-            if(((ArrayList)res.getResponse()).size()!=0){
-                c.setMessages((ArrayList<Message>) res.getResponse());
-            }
-        }
-
-        return c;
-    }
-
-    public ArrayList<String> updateContactList() {
-        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-
-        serverRequest("GET /user/"+username+"/friends", res);
-
-        if(res.getStatusCode().equals(StatusCode.OK)){
-            return (ArrayList<String>)res.getResponse();
-        }
-
-        return new ArrayList<String>();
-    }
-
-    public boolean addFriend(String friend){
-        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-
-        serverRequest("POST /user/"+username+"/friends/add friend="+friend, res);
-        if(res.getStatusCode().equals(StatusCode.OK)){
-            return true;
-        }
-        return false;
-    }
-
-    public ArrayList<String> getAllFriends(){
-        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-        serverRequest("GET /user/"+username+"/friends", res);
-
-        if(((ArrayList)res.getResponse()).size() > 0){
-            return (ArrayList<String>)(res.getResponse());
-        }
-        return new ArrayList<>();
-    }
-
-    public void removeFriend(String friend){
-        ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-        serverRequest("POST /user/"+username+"/friends/remove friend="+friend, res);
-
-    }
-
-    public void addContact(){
-
-    }
-
-    public synchronized void serverRequest(String line, ServerResponse resp){
-        ServerResponse sr = new ServerResponse(StatusCode.ERROR, "Internal Error");
-
+    public void serverRequest(String line){
         try {
-            oos.writeObject(line);
-            Object o = ois.readObject();
-            sr = (ServerResponse) o;
+            oos.writeObject(Utilities.encrypt(line));
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private int getNewID(){
+        return currentID++;
+    }
+
+    public void createFriendRequest(String username){
+        serverRequest("POST /user/"+this.username+"/friends/request?friend="+username, rsp -> {
+            if(rsp.getStatusCode().equals(StatusCode.OK)){
+                Friend newFriend = new Friend(username, true, false);
+                this.friends.add(newFriend);
+                observers.forEach(o -> o.newSentFriendRequest(newFriend));
+            }
+            return null;
+        });
+    }
+
+    public void acceptFriendRequest(String username){
+        Optional<Friend> friend = friends.stream().filter(f -> f.username.equals(username)).findFirst();
+
+        if(friend.isPresent() && friend.get().isFriendRequestReceived){
+            serverRequest("POST /user/"+this.username+"/friends/accept?friend="+username, rsp -> {
+                if(rsp.getStatusCode().equals(StatusCode.OK)){
+                    Friend nf = new Friend(username, true, false);
+                    this.friends.add(nf);
+                    observers.forEach(o -> o.friendRequestAccepted(nf));
+                }
+                return null;
+            });
+        }
+    }
+
+    public void removeFriend(String username){
+        Optional<Friend> friend = friends.stream().filter(f -> f.username.equals(username)).findFirst();
+
+        if(friend.isPresent()){
+            serverRequest("POST /user/"+this.username+"/friends/remove?friend="+username, rsp -> {
+                if(rsp.getStatusCode().equals(StatusCode.OK)){
+                    this.friends.removeIf(f -> f.username.equals(username));
+                }
+                return null;
+            });
+        }
+    }
+
+    public void populateFriendList(){
+        serverRequest("GET /user/"+this.username+"/friends", rsp -> {
+            if(rsp.getStatusCode().equals(StatusCode.OK)){
+                HashMap<String, ArrayList<String>> friendList = (HashMap<String, ArrayList<String>>)rsp.getResponse();
+
+                for(String f : friendList.get("friends")){
+                    friends.add(new Friend(f, false, false));
+                }
+
+                for(String f : friendList.get("requestSent")){
+                    friends.add(new Friend(f, true, false));
+                }
+
+                for(String f : friendList.get("requestReceived")){
+                    friends.add(new Friend(f, false, true));
+                }
+
+                observers.forEach(o->o.updateFriendList(null));
+            }
+            return null;
+        });
+    }
+
+    @Override
+    public void run() {
+        try {
+            while(true){
+                if(server.getInputStream().available()!=0){
+                    ServerResponse sr = (ServerResponse)Utilities.decrypt((byte[])ois.readObject());
+                    if(sr.getReqID() != -1){
+                        if(waitingList.containsKey(sr.getReqID())){
+                            waitingList.get(sr.getReqID()).apply(sr); // apply function and send server response.
+                            waitingList.remove(sr.getReqID()); // Remove waiting request function
+                        }
+                    }
+                    else{
+                        System.out.println("Response has no reqID");
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        finally {
-            resp.setStatusCode(sr.getStatusCode());
-            resp.setResponse(sr.getResponse());
-
-        }
     }
 
-    @Override
-    public void run() {
-        ServerResponse sr;
+    public class Friend {
+        public String username;
+        public boolean friendRequestSent;
+        public boolean isFriendRequestReceived;
 
-        while(true){
-            sr = new ServerResponse(StatusCode.ERROR, "Internal Error");
-            serverRequest("GET /users/"+username+"/notifications", sr);
-
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Client client = new Client("Ciscomarte");
-        client.start();
-
-
-        Scanner scanner = new Scanner(System.in);
-        String line = scanner.nextLine();
-        while(true){
-            if(line.equals("EXIT")){
-                break;
-            }
-
-            ServerResponse res = new ServerResponse(StatusCode.ERROR, "");
-
-            client.serverRequest(line, res);
-
-            System.out.println(res);
-            line = scanner.nextLine();
+        public Friend(String username, boolean friendRequestSent, boolean isFriendRequestReceived) {
+            this.username = username;
+            this.friendRequestSent = friendRequestSent;
+            this.isFriendRequestReceived = isFriendRequestReceived;
         }
 
+        @Override
+        public String toString() {
+            return username + (friendRequestSent? " (sent)" : isFriendRequestReceived? " (received)": "");
+        }
     }
-
-
 }

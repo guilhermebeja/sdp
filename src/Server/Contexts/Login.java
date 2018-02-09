@@ -1,16 +1,17 @@
 package Server.Contexts;
 
 import Entities.User;
-import Server.Database;
-import Server.Parameters;
-import Server.ServerResponse;
-import Server.StatusCode;
+import Server.*;
 
 import java.util.Optional;
 
-public class Login implements ResponseContext{
+public class Login extends ResponseContext{
+    public Login(Server server) {
+        super(server);
+    }
+
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(!params.containsParameter("username") || !params.containsParameter("password")){
             return new ServerResponse(StatusCode.BAD_REQUEST, "Missing parameters");
         }
@@ -28,6 +29,8 @@ public class Login implements ResponseContext{
                 u.get().setLoggedIn(true);
                 u.get().setIp(params.getParameter("ip").get(0));
                 u.get().setPort(Integer.parseInt(params.getParameter("port").get(0)));
+                server.usersLogged.put(username, clientSocket);
+
                 return new ServerResponse(StatusCode.OK, "Logged In");
             }
         }
@@ -35,6 +38,5 @@ public class Login implements ResponseContext{
         else{
             return new ServerResponse(StatusCode.FORBBIDEN, "Invalid Credentials");
         }
-
     }
 }

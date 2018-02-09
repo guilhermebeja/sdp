@@ -1,18 +1,20 @@
 package Server.Contexts;
 
 import Entities.User;
-import Server.Database;
-import Server.Parameters;
-import Server.ServerResponse;
-import Server.StatusCode;
+import Server.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
-public class GetUserFriends implements ResponseContext {
+public class GetUserFriends extends ResponseContext {
+
+    public GetUserFriends(Server server) {
+        super(server);
+    }
 
     @Override
-    public ServerResponse getResponse(Parameters params) {
+    public ServerResponse getResponse(Parameters params, ClientSocket clientSocket) {
         if(!params.containsParameter("username")){
             return new ServerResponse(StatusCode.BAD_REQUEST, "Username not provided");
         }
@@ -22,8 +24,18 @@ public class GetUserFriends implements ResponseContext {
         Optional<User> u = Database.getUserByUsername(username);
 
         if(u.isPresent()){
-            ArrayList<String> test = u.get().getFriends();
-            return new ServerResponse(StatusCode.OK, test);
+            ArrayList<String> friends = u.get().getFriends();
+            ArrayList<String> sent = u.get().getPendingFriends();
+            ArrayList<String> received = u.get().getPendingAccept();
+            HashMap<String, ArrayList<String>> result = new HashMap<>();
+
+            result.put("friends", friends);
+            result.put("requestSent", sent);
+            result.put("requestReceived", received);
+
+            System.out.println(sent.toString());
+
+            return new ServerResponse(StatusCode.OK, result);
         }
 
         else{

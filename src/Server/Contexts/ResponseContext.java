@@ -1,8 +1,14 @@
 package Server.Contexts;
 
-import Server.Parameters;
-import Server.ServerResponse;
+import Server.*;
 
-public interface ResponseContext {
-    ServerResponse getResponse(Parameters params);
+public abstract class ResponseContext {
+
+    protected Server server;
+
+    public ResponseContext(Server server){
+        this.server = server;
+    }
+
+    public abstract ServerResponse getResponse(Parameters params, ClientSocket clientSocket);
 }

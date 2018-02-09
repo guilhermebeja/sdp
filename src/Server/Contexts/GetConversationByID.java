@@ -5,8 +5,8 @@ import Server.*;
 
 import java.util.Optional;
 
-public class GetConversationUsers extends ResponseContext{
-    public GetConversationUsers(Server server) {
+public class GetConversationByID extends ResponseContext{
+    public GetConversationByID(Server server) {
         super(server);
     }
 
@@ -21,10 +21,11 @@ public class GetConversationUsers extends ResponseContext{
         Optional<Conversation> conv = Database.getConversationByID(id);
 
         if(conv.isPresent()){
-           return new ServerResponse(StatusCode.OK, conv.get().getUsers());
+            return new ServerResponse(StatusCode.OK, conv.get());
         }
         else{
             return new ServerResponse(StatusCode.NOT_FOUND, "The conversation \"" + id + "\" doesn't exist");
         }
     }
 }
+

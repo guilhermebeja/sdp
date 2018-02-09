@@ -16,6 +16,7 @@ public class Database implements Serializable{
     private static ArrayList<User> users = new ArrayList<>();
     private static ArrayList<Conversation> conversations = new ArrayList<>();
 
+
     public static ArrayList<User> getUsers() {
         return users;
     }
@@ -43,7 +44,6 @@ public class Database implements Serializable{
     public static  ArrayList<Conversation> getConversations(Predicate<Conversation> search){
         return (ArrayList<Conversation>) conversations.stream().filter(search).collect(Collectors.toList());
     }
-
 
     public static void addUser(User u){
         users.add(u);

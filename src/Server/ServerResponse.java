@@ -7,6 +7,7 @@ import java.util.Arrays;
 public class ServerResponse implements Serializable{
     private StatusCode statusCode;
     private Object response;
+    private int reqID = -1;
 
     //region Getters and Setters
     public StatusCode getStatusCode() {
@@ -22,6 +23,15 @@ public class ServerResponse implements Serializable{
     public void setResponse(Object response) {
         this.response = response;
     }
+
+    public int getReqID() {
+        return reqID;
+    }
+
+    public void setReqID(int reqID) {
+        this.reqID = reqID;
+    }
+
     //endregion
 
     //region Constructors

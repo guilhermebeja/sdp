@@ -1,6 +1,7 @@
 package UI;
 
 import Client.Client;
+import DataStructures.Message;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,8 +15,6 @@ public class PrivateChat extends Thread {
     private JFrame frame;
 
     private DatagramSocket socket;
-    private boolean running;
-    private byte[] buf = new byte[256];
     private InetAddress inetReceive;
 
     public PrivateChat(Client client, String userIP){
@@ -50,6 +49,8 @@ public class PrivateChat extends Thread {
         c.gridx = 0;
         c.gridy = 0;
         conversationTextArea = new JTextArea();
+        conversationTextArea.setEditable(false);
+
         mainPanel.add(new JScrollPane(conversationTextArea), c);
 
         c.weighty = 0.1;
@@ -78,11 +79,16 @@ public class PrivateChat extends Thread {
         try {
             DatagramPacket dp = new DatagramPacket(message.getBytes(), message.length(), InetAddress.getByName(ip), 8080);
             socket.send(dp);
+            addMessageToConversation(message);
+
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private void addMessageToConversation(String m){
+        conversationTextArea.setText(conversationTextArea.getText() +"\n"+ m +  "\n=============\n");
     }
 
     @Override

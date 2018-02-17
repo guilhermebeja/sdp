@@ -1,6 +1,8 @@
 package UI;
 
 import Client.*;
+import DataStructures.Conversation;
+import DataStructures.Message;
 import Exceptions.ClientException;
 import Interfaces.Observer;
 import Server.StatusCode;
@@ -18,6 +20,7 @@ import java.awt.event.MouseEvent;
 public class Application extends JFrame implements Observer {
     private Client client;
     private DefaultListModel friendListModel;
+    private Conversation currentConversation = null;
     public Application(){
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         init();
@@ -209,8 +212,6 @@ public class Application extends JFrame implements Observer {
 
         initFriendsPanel();
         initChatWindow();
-
-
     }
 
     private void initFriendsPanel(){
@@ -244,6 +245,7 @@ public class Application extends JFrame implements Observer {
         rejectFriendRequest = new JMenuItem("Reject");
         removeFriend = new JMenuItem("Remove");
         startPrivateConversation = new JMenuItem("Start Private Chat");
+        startConversation = new JMenuItem("Chat");
 
         acceptFriendRequest.addActionListener(new AbstractAction() {
             @Override
@@ -261,6 +263,21 @@ public class Application extends JFrame implements Observer {
             }
         });
 
+        removeFriend.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Client.Friend f = (Client.Friend)friendListModel.get(friendsList.getSelectedIndex());
+                client.removeFriend(f.username);
+            }
+        });
+
+        startConversation.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switchCurrentConversation();
+            }
+        });
+
         addFriendButton.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -271,32 +288,33 @@ public class Application extends JFrame implements Observer {
         friendsList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int index = friendsList.locationToIndex(e.getPoint());
-                if(index<0){
-                    friendsList.setSelectedIndex(-1);
-                }
-                else{
-                    if(e.getButton()==MouseEvent.BUTTON3){
-                        friendsList.setSelectedIndex(index);
-                        Client.Friend f = (Client.Friend)friendListModel.get(index);
-                        JPopupMenu friendPopup = new JPopupMenu();
-                        if(f.isFriendRequestReceived){
-                            friendPopup.add(acceptFriendRequest);
-                            friendPopup.add(rejectFriendRequest);
-                        }
-
-                        else if(f.friendRequestSent){
-                            friendPopup.add(removeFriend);
-                        }
-
-                        else{
-                            friendPopup.add(startPrivateConversation);
-                            friendPopup.add(removeFriend);
-                        }
-
-                        friendPopup.show(e.getComponent(), e.getX(), e.getY());
+            int index = friendsList.locationToIndex(e.getPoint());
+            if(index<0){
+                friendsList.setSelectedIndex(-1);
+            }
+            else{
+                if(e.getButton()==MouseEvent.BUTTON3){
+                    friendsList.setSelectedIndex(index);
+                    Client.Friend f = (Client.Friend)friendListModel.get(index);
+                    JPopupMenu friendPopup = new JPopupMenu();
+                    if(f.isFriendRequestReceived){
+                        friendPopup.add(acceptFriendRequest);
+                        friendPopup.add(rejectFriendRequest);
                     }
+
+                    else if(f.friendRequestSent){
+                        friendPopup.add(removeFriend);
+                    }
+
+                    else{
+                        friendPopup.add(startConversation);
+                        friendPopup.add(startPrivateConversation);
+                        friendPopup.add(removeFriend);
+                    }
+
+                    friendPopup.show(e.getComponent(), e.getX(), e.getY());
                 }
+            }
             }
         });
 
@@ -308,6 +326,7 @@ public class Application extends JFrame implements Observer {
         });
     }
 
+
     private void initChatWindow(){
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -315,13 +334,13 @@ public class Application extends JFrame implements Observer {
         c.weightx = 1;
         c.gridwidth = 2;
 
-        conversationTextArea = new JTextArea("Conversation here");
+        conversationTextArea = new JTextArea("");
+        conversationTextArea.setEditable(false);
         c.gridx = 0;
         c.gridy = 0;
         chatWindow.add(new JScrollPane(conversationTextArea), c);
 
-
-        messageToSendTextArea = new JTextArea("Message to send Here");
+        messageToSendTextArea = new JTextArea("");
         c.gridwidth = 1;
         c.weightx = 0.9;
         c.weighty = 0.2;
@@ -335,6 +354,16 @@ public class Application extends JFrame implements Observer {
         c.gridy = 1;
         chatWindow.add(sendMessageButton, c);
 
+        sendMessageButton.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(currentConversation!=null){
+                    client.sendMessage(currentConversation.getId(), messageToSendTextArea.getText());
+                    addMessageToConversation(new Message(client.getUsername(), currentConversation.getId(), messageToSendTextArea.getText(), System.currentTimeMillis()));
+                    messageToSendTextArea.setText("");
+                }
+            }
+        });
     }
 
     private void initMainPanel() {
@@ -408,6 +437,10 @@ public class Application extends JFrame implements Observer {
         }
     }
 
+    private void switchCurrentConversation(){
+        client.getConversation(Extras.Utilities.CreateConversationID(client.getUsername(), ((Client.Friend)friendListModel.get(friendsList.getSelectedIndex())).username));
+    }
+
     //endregion
 
     //region Observer Functions
@@ -454,7 +487,28 @@ public class Application extends JFrame implements Observer {
         }
     }
 
+    @Override
+    public void changeCurrentConversation(Conversation c) {
+        currentConversation = c;
+        conversationTextArea.setText("");
+        for(Message m : c.getMessages()){
+            addMessageToConversation(m);
+        }
+    }
+
+    @Override
+    public void newMessage(int convID, Message m) {
+        if(currentConversation.getId()==convID){
+            addMessageToConversation(m);
+        }
+    }
+
     //endregion
+
+    private void addMessageToConversation(Message m){
+        conversationTextArea.setText(conversationTextArea.getText()+m.getSender()+": " + m.getContent() +  "\n=============\n");
+    }
+
 
     private void changeCard(String cardName){
         CardLayout cl = (CardLayout)mainPanel.getLayout();
@@ -499,7 +553,7 @@ public class Application extends JFrame implements Observer {
     private JMenuItem rejectFriendRequest;
     private JMenuItem removeFriend;
     private JMenuItem startPrivateConversation;
-
+    private JMenuItem startConversation;
 
 
     //Top Menu Bar variables

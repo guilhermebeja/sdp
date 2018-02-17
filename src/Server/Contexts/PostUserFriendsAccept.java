@@ -1,6 +1,8 @@
 package Server.Contexts;
 
+import DataStructures.Conversation;
 import Entities.User;
+import Extras.Utilities;
 import Server.*;
 
 import java.util.Optional;
@@ -35,6 +37,7 @@ public class PostUserFriendsAccept extends ResponseContext{
 
                         server.sendNotification(friend, new ServerResponse(StatusCode.NOTIFICATION, new Notification(Notification.NotificationType.FRIEND_REQUEST_ACCEPTED, username)));
 
+                        Database.addConversation(new Conversation(Utilities.CreateConversationID(username, friend)));
                         return new ServerResponse(StatusCode.OK, "Friend's Added");
                     }
                 }

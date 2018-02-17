@@ -10,13 +10,6 @@ import org.apache.commons.codec.binary.Base64;
 
 
 public class Utilities {
-    public static int generateConversationID(String usernames){
-        int result = 0;
-        for(int i=0; i < usernames.length(); i++){
-            result += usernames.charAt(i);
-        }
-        return result;
-    }
 
     public static byte[] encrypt(Object obj) {
         byte[] key = (new String("guilherme beja")).getBytes();

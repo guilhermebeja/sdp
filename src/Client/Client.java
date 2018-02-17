@@ -2,8 +2,10 @@ package Client;
 
 
 import DataStructures.Conversation;
+import DataStructures.Message;
 import Exceptions.ClientException;
 import Exceptions.ServerConnectionTimeoutException;
+import Extras.Pair;
 import Interfaces.Observer;
 import Server.*;
 
@@ -81,6 +83,17 @@ public class Client extends Thread{
         }
     }
 
+    public void sendMessage(int cID, String message){
+        serverRequest("POST /conversation/"+cID+"/messages/add?sender="+username+"&content="+message+"&time="+System.currentTimeMillis());
+    }
+
+    public void getConversation(int conversationID){
+        serverRequest("GET /conversation/"+conversationID, rsp -> {
+            Conversation conv = (Conversation)rsp.getResponse();
+            observers.forEach(o -> o.changeCurrentConversation(conv));
+            return null;
+        });
+    }
     private int getNewID(){
         return currentID++;
     }
@@ -177,6 +190,10 @@ public class Client extends Thread{
         });
     }
 
+    public void incomingMessage(int convID, Message m){
+        observers.forEach(observer -> observer.newMessage(convID, m));
+    }
+
     private void processNotification(Notification notification){
         if(notification.type.equals(Notification.NotificationType.NEW_FRIEND_REQUEST)){
             newIncomingFriendRequest((String)notification.data);
@@ -186,6 +203,11 @@ public class Client extends Thread{
         }
         else if(notification.type.equals(Notification.NotificationType.FRIEND_REMOVED)){
             friendRemoved((String)notification.data);
+        }
+
+        else if(notification.type.equals(Notification.NotificationType.NEW_MESSAGE)){
+            Pair<Integer, Message> pair = (Pair<Integer, Message>)notification.data;
+            incomingMessage(pair.getLeft(), pair.getRight());
         }
     }
 

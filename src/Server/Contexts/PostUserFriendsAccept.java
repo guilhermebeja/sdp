@@ -36,8 +36,11 @@ public class PostUserFriendsAccept extends ResponseContext{
                         Database.getUserByUsername(friend).get().getPendingFriends().remove(username);
 
                         server.sendNotification(friend, new ServerResponse(StatusCode.NOTIFICATION, new Notification(Notification.NotificationType.FRIEND_REQUEST_ACCEPTED, username)));
+                        Conversation c = new Conversation(Utilities.CreateConversationID(username, friend));
+                        c.getUsers().add(username);
+                        c.getUsers().add(friend);
 
-                        Database.addConversation(new Conversation(Utilities.CreateConversationID(username, friend)));
+                        Database.addConversation(c);
                         return new ServerResponse(StatusCode.OK, "Friend's Added");
                     }
                 }

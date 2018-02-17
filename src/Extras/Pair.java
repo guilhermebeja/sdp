@@ -1,6 +1,8 @@
 package Extras;
 
-public class Pair<t, k> {
+import java.io.Serializable;
+
+public class Pair<t, k> implements Serializable{
 
     private t objectT;
     private k objectK;

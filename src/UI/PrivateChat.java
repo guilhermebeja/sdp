@@ -95,7 +95,7 @@ public class PrivateChat extends Thread {
                 byte data[] = dp.getData();
                 int len = dp.getLength();
                 String result = new String(data);
-                System.out.println(result);
+                conversationTextArea.setText(conversationTextArea.getText()+"\n===\n" + result);
 
             } catch (IOException e) {
                 e.printStackTrace();

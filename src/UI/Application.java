@@ -503,9 +503,12 @@ public class Application extends JFrame implements Observer {
 
     @Override
     public void newMessage(int convID, Message m) {
-        if(currentConversation.getId()==convID){
-            addMessageToConversation(m);
+        if(currentConversation!=null){
+            if(currentConversation.getId()==convID){
+                addMessageToConversation(m);
+            }
         }
+
     }
 
     @Override

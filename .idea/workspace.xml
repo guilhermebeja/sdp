@@ -4,13 +4,10 @@
     <bookmark url="file://$PROJECT_DIR$/src/Server/Contexts/PostUserFriendsRemove.java" line="19" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f72cc17e-a2e4-4a0b-95cb-8f4a2cfa0310" name="Default" comment="Fixes Notifications">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/UI/PrivateChat.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+    <list default="true" id="f72cc17e-a2e4-4a0b-95cb-8f4a2cfa0310" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/Client/Client.java" afterPath="$PROJECT_DIR$/src/Client/Client.java" />
-      <change beforePath="$PROJECT_DIR$/src/Interfaces/Observer.java" afterPath="$PROJECT_DIR$/src/Interfaces/Observer.java" />
       <change beforePath="$PROJECT_DIR$/src/UI/Application.java" afterPath="$PROJECT_DIR$/src/UI/Application.java" />
+      <change beforePath="$PROJECT_DIR$/src/UI/PrivateChat.java" afterPath="$PROJECT_DIR$/src/UI/PrivateChat.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -118,8 +115,8 @@
       <file leaf-file-name="Application.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UI/Application.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="512" column="51" lean-forward="false" selection-start-line="512" selection-start-column="49" selection-end-line="512" selection-end-column="51" />
+            <state relative-caret-position="4182">
+              <caret line="508" column="13" lean-forward="false" selection-start-line="508" selection-start-column="13" selection-end-line="508" selection-end-column="13" />
               <folding>
                 <element signature="method#Application#0;class#Application#0" expanded="false" />
                 <element signature="method#initLoginPanel#0;class#Application#0" expanded="false" />
@@ -139,8 +136,8 @@
                 <element signature="e#15284#15285#0" expanded="true" />
                 <element signature="method#updateFriendList#0;class#Application#0" expanded="false" />
                 <element signature="method#removedFriend#0;class#Application#0" expanded="false" />
-                <element signature="e#16333#16334#0" expanded="true" />
-                <element signature="e#16393#16394#0" expanded="true" />
+                <element signature="e#16395#16396#0" expanded="true" />
+                <element signature="e#16455#16456#0" expanded="true" />
                 <element signature="method#changeCard#0;class#Application#0" expanded="false" />
                 <element signature="n#!!doc;n#mainPanel#0;n#Application#0" expanded="false" />
                 <element signature="method#main#0;class#Application#0" expanded="false" />
@@ -152,8 +149,8 @@
       <file leaf-file-name="PrivateChat.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UI/PrivateChat.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1046">
-              <caret line="20" column="51" lean-forward="false" selection-start-line="20" selection-start-column="45" selection-end-line="20" selection-end-column="51" />
+            <state relative-caret-position="416">
+              <caret line="27" column="44" lean-forward="false" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1612#1863#0" expanded="true" />
@@ -293,9 +290,9 @@
         <option value="$PROJECT_DIR$/src/Extras/Pair.java" />
         <option value="$PROJECT_DIR$/src/UI/PrivateChatForm.form" />
         <option value="$PROJECT_DIR$/src/Interfaces/Observer.java" />
-        <option value="$PROJECT_DIR$/src/UI/Application.java" />
-        <option value="$PROJECT_DIR$/src/UI/PrivateChat.java" />
         <option value="$PROJECT_DIR$/src/Client/Client.java" />
+        <option value="$PROJECT_DIR$/src/UI/PrivateChat.java" />
+        <option value="$PROJECT_DIR$/src/UI/Application.java" />
       </list>
     </option>
   </component>
@@ -607,7 +604,7 @@
       <workItem from="1518192423847" duration="13482000" />
       <workItem from="1518206124550" duration="57000" />
       <workItem from="1518880233569" duration="3966000" />
-      <workItem from="1518884402696" duration="9697000" />
+      <workItem from="1518884402696" duration="10053000" />
     </task>
     <task id="LOCAL-00001" summary="zx">
       <created>1514312939328</created>
@@ -784,11 +781,18 @@
       <option name="project" value="LOCAL" />
       <updated>1518890354314</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Fixes Notifications">
+      <created>1518894763215</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1518894763215</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83536000" />
+    <option name="totallyTimeSpent" value="83892000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -810,7 +814,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32767764" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3223754" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32878152" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -888,7 +892,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="158" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/UI/PrivateChat.java</url>
+          <line>97</line>
+          <properties />
+          <option name="timeStamp" value="158" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="159" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1297,38 +1309,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UI/Application.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="512" column="51" lean-forward="false" selection-start-line="512" selection-start-column="49" selection-end-line="512" selection-end-column="51" />
-          <folding>
-            <element signature="method#Application#0;class#Application#0" expanded="false" />
-            <element signature="method#initLoginPanel#0;class#Application#0" expanded="false" />
-            <element signature="method#initChatPanel#0;class#Application#0" expanded="false" />
-            <element signature="e#8409#8647#0" expanded="true" />
-            <element signature="e#8646#8647#0" expanded="true" />
-            <element signature="class#10423:10556" expanded="false" />
-            <element signature="method#valueChanged#0;class#10423:10556" expanded="false" />
-            <element signature="method#initChatWindow#0;class#Application#0" expanded="false" />
-            <element signature="method#initMainPanel#0;class#Application#0" expanded="false" />
-            <element signature="method#login#0;class#Application#0" expanded="false" />
-            <element signature="e#12560#13036#0" expanded="false" />
-            <element signature="e#13874#14315#0" expanded="false" />
-            <element signature="e#15100#15101#0" expanded="true" />
-            <element signature="e#15160#15161#0" expanded="true" />
-            <element signature="e#15224#15225#0" expanded="true" />
-            <element signature="e#15284#15285#0" expanded="true" />
-            <element signature="method#updateFriendList#0;class#Application#0" expanded="false" />
-            <element signature="method#removedFriend#0;class#Application#0" expanded="false" />
-            <element signature="e#16333#16334#0" expanded="true" />
-            <element signature="e#16393#16394#0" expanded="true" />
-            <element signature="method#changeCard#0;class#Application#0" expanded="false" />
-            <element signature="n#!!doc;n#mainPanel#0;n#Application#0" expanded="false" />
-            <element signature="method#main#0;class#Application#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -1381,10 +1361,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/UI/Application.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4182">
+          <caret line="508" column="13" lean-forward="false" selection-start-line="508" selection-start-column="13" selection-end-line="508" selection-end-column="13" />
+          <folding>
+            <element signature="method#Application#0;class#Application#0" expanded="false" />
+            <element signature="method#initLoginPanel#0;class#Application#0" expanded="false" />
+            <element signature="method#initChatPanel#0;class#Application#0" expanded="false" />
+            <element signature="e#8409#8647#0" expanded="true" />
+            <element signature="e#8646#8647#0" expanded="true" />
+            <element signature="class#10423:10556" expanded="false" />
+            <element signature="method#valueChanged#0;class#10423:10556" expanded="false" />
+            <element signature="method#initChatWindow#0;class#Application#0" expanded="false" />
+            <element signature="method#initMainPanel#0;class#Application#0" expanded="false" />
+            <element signature="method#login#0;class#Application#0" expanded="false" />
+            <element signature="e#12560#13036#0" expanded="false" />
+            <element signature="e#13874#14315#0" expanded="false" />
+            <element signature="e#15100#15101#0" expanded="true" />
+            <element signature="e#15160#15161#0" expanded="true" />
+            <element signature="e#15224#15225#0" expanded="true" />
+            <element signature="e#15284#15285#0" expanded="true" />
+            <element signature="method#updateFriendList#0;class#Application#0" expanded="false" />
+            <element signature="method#removedFriend#0;class#Application#0" expanded="false" />
+            <element signature="e#16395#16396#0" expanded="true" />
+            <element signature="e#16455#16456#0" expanded="true" />
+            <element signature="method#changeCard#0;class#Application#0" expanded="false" />
+            <element signature="n#!!doc;n#mainPanel#0;n#Application#0" expanded="false" />
+            <element signature="method#main#0;class#Application#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/UI/PrivateChat.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1046">
-          <caret line="20" column="51" lean-forward="false" selection-start-line="20" selection-start-column="45" selection-end-line="20" selection-end-column="51" />
+        <state relative-caret-position="416">
+          <caret line="27" column="44" lean-forward="false" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1612#1863#0" expanded="true" />

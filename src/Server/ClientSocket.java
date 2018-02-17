@@ -52,15 +52,18 @@ public class ClientSocket extends Thread{
                 if(soc.getInputStream().available()!=0){
                     String line = (String) Utilities.decrypt((byte[])ois.readObject());
                     printRequest(line);
+
                     String ip = soc.getRemoteSocketAddress().toString().substring(0, soc.getRemoteSocketAddress().toString().indexOf(":"));
                     ip = ip.replace("/", "");
+                    System.out.println(ip);
+                    System.out.println(soc.getPort());
                     if(ip.equals("127.0.0.1")){
                         URL whatismyip = new URL("http://checkip.amazonaws.com");
                         BufferedReader in = new BufferedReader(new InputStreamReader(
                                 whatismyip.openStream()));
 
                         ip = in.readLine(); //you get the IP as a String
-                        System.out.println(ip);
+
                     }
                     ServerRequest req = new ServerRequest(line, ip, soc.getPort());
                     server.respond(req, this);

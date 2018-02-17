@@ -25,7 +25,7 @@ public class PrivateChat extends Thread {
         frame = new JFrame("Private Conversation: " + destination);
 
         try {
-            socket = new DatagramSocket(8080);
+            socket = new DatagramSocket(8081);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -77,7 +77,7 @@ public class PrivateChat extends Thread {
 
     public void sendMessage(String ip, String message){
         try {
-            DatagramPacket dp = new DatagramPacket(message.getBytes(), message.length(), InetAddress.getByName(ip), 8080);
+            DatagramPacket dp = new DatagramPacket(message.getBytes(), message.length(), InetAddress.getByName(ip), 8081);
             socket.send(dp);
             addMessageToConversation(message);
 

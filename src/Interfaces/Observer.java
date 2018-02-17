@@ -11,4 +11,5 @@ public interface Observer {
     void removedFriend(Object o);
     void changeCurrentConversation(Conversation c);
     void newMessage(int convID, Message m);
+    void openSecretConversation(String ip);
 }

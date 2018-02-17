@@ -84,6 +84,7 @@ public class Client extends Thread{
     }
 
     public void sendMessage(int cID, String message){
+        message=message.replace(" ", "+");
         serverRequest("POST /conversation/"+cID+"/messages/add?sender="+username+"&content="+message+"&time="+System.currentTimeMillis());
     }
 
@@ -192,6 +193,13 @@ public class Client extends Thread{
 
     public void incomingMessage(int convID, Message m){
         observers.forEach(observer -> observer.newMessage(convID, m));
+    }
+
+    public void getUserIP(String username){
+        serverRequest("GET /user/"+username+"/ip", rsp -> {
+            observers.forEach(o -> o.openSecretConversation((String)rsp.getResponse()));
+            return null;
+        });
     }
 
     private void processNotification(Notification notification){

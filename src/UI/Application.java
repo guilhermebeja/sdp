@@ -51,7 +51,6 @@ public class Application extends JFrame implements Observer {
     //region Init Components
     private void init(){
         initFonts();
-
         initRegisterPanel();
         initLoginPanel();
         initChatPanel();
@@ -271,6 +270,13 @@ public class Application extends JFrame implements Observer {
             }
         });
 
+        startPrivateConversation.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                client.getUserIP(((Client.Friend)friendListModel.get(friendsList.getSelectedIndex())).username);
+            }
+        });
+
         startConversation.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -325,7 +331,6 @@ public class Application extends JFrame implements Observer {
             }
         });
     }
-
 
     private void initChatWindow(){
         GridBagConstraints c = new GridBagConstraints();
@@ -501,6 +506,11 @@ public class Application extends JFrame implements Observer {
         if(currentConversation.getId()==convID){
             addMessageToConversation(m);
         }
+    }
+
+    @Override
+    public void openSecretConversation(String ip) {
+        PrivateChat pv = new PrivateChat(client, ip);
     }
 
     //endregion

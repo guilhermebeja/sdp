@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class Notification implements Serializable{
     public enum NotificationType {
         NEW_FRIEND_REQUEST,
+        FRIEND_REQUEST_ACCEPTED,
+        FRIEND_REQUEST_REJECTED,
         NEW_MESSAGE
     }
 

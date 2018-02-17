@@ -86,14 +86,17 @@ public class Client extends Thread{
     }
 
     public void createFriendRequest(String username){
-        serverRequest("POST /user/"+this.username+"/friends/request?friend="+username, rsp -> {
-            if(rsp.getStatusCode().equals(StatusCode.OK)){
-                Friend newFriend = new Friend(username, true, false);
-                this.friends.add(newFriend);
-                observers.forEach(o -> o.newSentFriendRequest(newFriend));
-            }
-            return null;
-        });
+        if(friends.stream().noneMatch(f -> f.username.equals(username))){
+            serverRequest("POST /user/"+this.username+"/friends/request?friend="+username, rsp -> {
+                if(rsp.getStatusCode().equals(StatusCode.OK)){
+                    Friend newFriend = new Friend(username, true, false);
+                    this.friends.add(newFriend);
+                    observers.forEach(o -> o.newSentFriendRequest(newFriend));
+                }
+                return null;
+            });
+        }
+
     }
 
     public void acceptFriendRequest(String username){
@@ -102,13 +105,27 @@ public class Client extends Thread{
         if(friend.isPresent() && friend.get().isFriendRequestReceived){
             serverRequest("POST /user/"+this.username+"/friends/accept?friend="+username, rsp -> {
                 if(rsp.getStatusCode().equals(StatusCode.OK)){
-                    Friend nf = new Friend(username, true, false);
+                    Friend nf = new Friend(username, false, false);
                     this.friends.add(nf);
                     observers.forEach(o -> o.friendRequestAccepted(nf));
                 }
                 return null;
             });
         }
+    }
+
+    public void friendRequestAccepted(String username){
+        Optional<Friend> friend = friends.stream().filter(f -> f.username.equals(username)).findFirst();
+
+        if(friend.isPresent() && friend.get().friendRequestSent){
+            friend.get().friendRequestSent = false;
+            friend.get().isFriendRequestReceived = false;
+            observers.forEach(o -> o.friendRequestAccepted(friend.get()));
+        }
+    }
+
+    public void rejectFriendRequest(String username){
+
     }
 
     public void removeFriend(String username){
@@ -158,6 +175,9 @@ public class Client extends Thread{
     private void processNotification(Notification notification){
         if(notification.type.equals(Notification.NotificationType.NEW_FRIEND_REQUEST)){
             newIncomingFriendRequest((String)notification.data);
+        }
+        else if(notification.type.equals(Notification.NotificationType.FRIEND_REQUEST_ACCEPTED)){
+            friendRequestAccepted((String)notification.data);
         }
     }
 

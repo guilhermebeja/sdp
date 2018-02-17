@@ -1,15 +1,19 @@
 package UI;
 
-import Client.Client;
+import Client.*;
 import Exceptions.ClientException;
 import Interfaces.Observer;
 import Server.StatusCode;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Application extends JFrame implements Observer {
     private Client client;
@@ -236,10 +240,70 @@ public class Application extends JFrame implements Observer {
         JScrollPane sp = new JScrollPane(friendsList);
         friendsPanel.add(sp, c);
 
+        acceptFriendRequest = new JMenuItem("Accept");
+        rejectFriendRequest = new JMenuItem("Reject");
+        removeFriend = new JMenuItem("Remove");
+        startPrivateConversation = new JMenuItem("Start Private Chat");
+
+        acceptFriendRequest.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Client.Friend f = (Client.Friend)friendListModel.get(friendsList.getSelectedIndex());
+                client.acceptFriendRequest(f.username);
+            }
+        });
+
+        rejectFriendRequest.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Client.Friend f = (Client.Friend)friendListModel.get(friendsList.getSelectedIndex());
+
+            }
+        });
+
         addFriendButton.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 client.createFriendRequest(friendSearchText.getText().trim());
+            }
+        });
+
+        friendsList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int index = friendsList.locationToIndex(e.getPoint());
+                if(index<0){
+                    friendsList.setSelectedIndex(-1);
+                }
+                else{
+                    if(e.getButton()==MouseEvent.BUTTON3){
+                        friendsList.setSelectedIndex(index);
+                        Client.Friend f = (Client.Friend)friendListModel.get(index);
+                        JPopupMenu friendPopup = new JPopupMenu();
+                        if(f.isFriendRequestReceived){
+                            friendPopup.add(acceptFriendRequest);
+                            friendPopup.add(rejectFriendRequest);
+                        }
+
+                        else if(f.friendRequestSent){
+                            friendPopup.add(removeFriend);
+                        }
+
+                        else{
+                            friendPopup.add(startPrivateConversation);
+                            friendPopup.add(removeFriend);
+                        }
+
+                        friendPopup.show(e.getComponent(), e.getX(), e.getY());
+                    }
+                }
+            }
+        });
+
+        friendsList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+
             }
         });
     }
@@ -350,7 +414,15 @@ public class Application extends JFrame implements Observer {
 
     @Override
     public void friendRequestAccepted(Object o) {
-
+        Client.Friend f = (Client.Friend)o;
+        for(int i = 0; i < friendListModel.size(); i++){
+            Client.Friend temp = ((Client.Friend)friendListModel.get(i));
+            if(temp.username.equals(f.username)){
+                friendListModel.remove(i);
+                break;
+            }
+        }
+        friendListModel.addElement(f);
     }
 
     @Override
@@ -360,7 +432,7 @@ public class Application extends JFrame implements Observer {
 
     @Override
     public void newSentFriendRequest(Object o) {
-
+        friendListModel.addElement((Client.Friend)o);
     }
 
     @Override
@@ -409,10 +481,18 @@ public class Application extends JFrame implements Observer {
     private JButton sendMessageButton;
     private JButton addFriendButton;
 
+    //Friend List Options
+    private JPopupMenu friendListPopupMenu;
+    private JMenuItem acceptFriendRequest;
+    private JMenuItem rejectFriendRequest;
+    private JMenuItem removeFriend;
+    private JMenuItem startPrivateConversation;
+
+
+
     //Top Menu Bar variables
     private JMenuBar menuBar;
     //endregion
-
 
     public static void main(String[] args) {
         Application app = new Application();

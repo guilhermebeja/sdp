@@ -102,7 +102,6 @@ public class Application extends JFrame implements Observer {
                 register();
             }
         });
-
     }
 
     private void initLoginPanel(){
@@ -283,7 +282,6 @@ public class Application extends JFrame implements Observer {
         setContentPane(mainPanel);
     }
 
-
     //endregion
 
     //region Functional
@@ -357,7 +355,7 @@ public class Application extends JFrame implements Observer {
 
     @Override
     public void newReceivedFriendRequest(Object o) {
-
+        friendListModel.addElement((Client.Friend)o);
     }
 
     @Override

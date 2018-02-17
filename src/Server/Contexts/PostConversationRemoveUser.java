@@ -20,6 +20,7 @@ public class PostConversationRemoveUser extends ResponseContext{
             if(c.isPresent()){
                 for(String u : params.getParameter("username")){
                     c.get().removeUser(u);
+
                 }
             }
 

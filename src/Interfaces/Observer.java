@@ -5,4 +5,5 @@ public interface Observer {
     void newSentFriendRequest(Object o);
     void friendRequestAccepted(Object o);
     void updateFriendList(Object o);
+    void removedFriend(Object o);
 }

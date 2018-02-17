@@ -248,16 +248,16 @@ public class Application extends JFrame implements Observer {
         acceptFriendRequest.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Client.Friend f = (Client.Friend)friendListModel.get(friendsList.getSelectedIndex());
-                client.acceptFriendRequest(f.username);
+            Client.Friend f = (Client.Friend)friendListModel.get(friendsList.getSelectedIndex());
+            client.acceptFriendRequest(f.username);
             }
         });
 
         rejectFriendRequest.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Client.Friend f = (Client.Friend)friendListModel.get(friendsList.getSelectedIndex());
-
+            Client.Friend f = (Client.Friend)friendListModel.get(friendsList.getSelectedIndex());
+            client.removeFriend(f.username);
             }
         });
 
@@ -439,6 +439,18 @@ public class Application extends JFrame implements Observer {
     public void updateFriendList(Object o) {
         for(Client.Friend friend : client.getFriends()){
             friendListModel.addElement(friend);
+        }
+    }
+
+    @Override
+    public void removedFriend(Object o) {
+        Client.Friend f  = (Client.Friend)o;
+        for(int i = 0; i < friendListModel.size(); i++){
+            Client.Friend temp = ((Client.Friend)friendListModel.get(i));
+            if(temp.username.equals(f.username)){
+                friendListModel.remove(i);
+                break;
+            }
         }
     }
 

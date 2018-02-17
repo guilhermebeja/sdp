@@ -124,10 +124,6 @@ public class Client extends Thread{
         }
     }
 
-    public void rejectFriendRequest(String username){
-
-    }
-
     public void removeFriend(String username){
         Optional<Friend> friend = friends.stream().filter(f -> f.username.equals(username)).findFirst();
 
@@ -135,9 +131,18 @@ public class Client extends Thread{
             serverRequest("POST /user/"+this.username+"/friends/remove?friend="+username, rsp -> {
                 if(rsp.getStatusCode().equals(StatusCode.OK)){
                     this.friends.removeIf(f -> f.username.equals(username));
+                    observers.forEach(o->o.removedFriend(friend.get()));
                 }
                 return null;
             });
+        }
+    }
+
+    public void friendRemoved(String username){
+        Optional<Friend> friend = friends.stream().filter(f -> f.username.equals(username)).findFirst();
+        if(friend.isPresent()){
+            this.friends.removeIf(f -> f.username.equals(username));
+            observers.forEach(o->o.removedFriend(friend.get()));
         }
     }
 
@@ -178,6 +183,9 @@ public class Client extends Thread{
         }
         else if(notification.type.equals(Notification.NotificationType.FRIEND_REQUEST_ACCEPTED)){
             friendRequestAccepted((String)notification.data);
+        }
+        else if(notification.type.equals(Notification.NotificationType.FRIEND_REMOVED)){
+            friendRemoved((String)notification.data);
         }
     }
 

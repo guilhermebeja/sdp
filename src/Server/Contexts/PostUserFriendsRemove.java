@@ -17,16 +17,19 @@ public class PostUserFriendsRemove extends ResponseContext {
         }
 
         String username = params.getParameter("username").get(0);
-
+        String friend = params.getParameter("friend").get(0);
         Optional<User> u = Database.getUserByUsername(username);
+        Optional<User> f = Database.getUserByUsername(friend);
 
         if(u.isPresent()){
-            for(String friend : params.getParameter("friend")){
-                if(u.get().getFriends().contains(friend)){
-                    u.get().removeFriend(friend);
-                }
-            }
 
+            if(u.get().getFriends().contains(friend)){
+                u.get().removeFriend(friend);
+            }
+            if(f.isPresent()){
+                f.get().removeFriend(username);
+                server.sendNotification(friend, new ServerResponse(StatusCode.NOTIFICATION, new Notification(Notification.NotificationType.FRIEND_REMOVED, username)));
+            }
             return new ServerResponse(StatusCode.OK, "Friends Removed");
         }
 

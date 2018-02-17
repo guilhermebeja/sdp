@@ -55,7 +55,6 @@ public class Application extends JFrame implements Observer {
         initLoginPanel();
         initChatPanel();
         initMainPanel();
-
     }
 
     private void initFonts(){

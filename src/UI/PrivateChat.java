@@ -19,10 +19,11 @@ public class PrivateChat extends Thread {
     private InetAddress inetReceive;
 
     public PrivateChat(Client client, String userIP){
-        frame = new JFrame("Private Conversation: " + userIP);
 
         this.client = client;
-        destination = userIP;
+        destination = userIP.substring(0, userIP.indexOf(':'));
+
+        frame = new JFrame("Private Conversation: " + destination);
 
         try {
             socket = new DatagramSocket(8080);

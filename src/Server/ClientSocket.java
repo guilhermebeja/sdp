@@ -2,10 +2,9 @@ package Server;
 
 import Client.Utilities;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Queue;
 
@@ -53,7 +52,17 @@ public class ClientSocket extends Thread{
                 if(soc.getInputStream().available()!=0){
                     String line = (String) Utilities.decrypt((byte[])ois.readObject());
                     printRequest(line);
-                    ServerRequest req = new ServerRequest(line, soc.getInetAddress().getHostAddress(), soc.getPort());
+                    String ip = soc.getRemoteSocketAddress().toString().substring(0, soc.getRemoteSocketAddress().toString().indexOf(":"));
+                    ip = ip.replace("/", "");
+                    if(ip.equals("127.0.0.1")){
+                        URL whatismyip = new URL("http://checkip.amazonaws.com");
+                        BufferedReader in = new BufferedReader(new InputStreamReader(
+                                whatismyip.openStream()));
+
+                        ip = in.readLine(); //you get the IP as a String
+                        System.out.println(ip);
+                    }
+                    ServerRequest req = new ServerRequest(line, ip, soc.getPort());
                     server.respond(req, this);
 
                     // Disconnect Request, end thread
